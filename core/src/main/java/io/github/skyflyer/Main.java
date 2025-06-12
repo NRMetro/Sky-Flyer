@@ -24,7 +24,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
 
-        characterTexture = new Texture("bucket.png");
+        characterTexture = new Texture("SkyFlyerDraft.png");
         backgroundTexture = new Texture("libgdx.png");
 
         characterSprite = new Sprite(characterTexture); // Initialize the sprite based on the texture
@@ -44,7 +44,7 @@ public class Main extends ApplicationAdapter {
     }
 
     private void input() {
-        float speed = .7f;
+        float speed = 1.2f;
         float delta = Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
