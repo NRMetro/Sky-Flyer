@@ -1,184 +1,79 @@
 package io.github.skyflyer.screens;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.skyflyer.games.Sky;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import io.github.skyflyer.Player;
 
-public class GameScreen implements Screen {
-    final Sky game;
 
-    Texture backgroundTexture;
-    Texture bucketTexture;
-    Texture dropTexture;
-    Sound dropSound;
-    Music music;
-    Sprite bucketSprite;
-    Vector2 touchPos;
-    Array<Sprite> dropSprites;
-    float dropTimer;
-    Rectangle bucketRectangle;
-    Rectangle dropRectangle;
-    int dropsGathered;
+public class GameScreen extends SkyScreen {
 
-    public GameScreen(final Sky game) {
-        this.game = game;
+    TiledMap map;
+    OrthogonalTiledMapRenderer renderer;
+    OrthographicCamera camera;
+    Player player;
+    SpriteBatch batch;
 
-        // load the images for the background, bucket and droplet
-        backgroundTexture = new Texture("background.png");
-        bucketTexture = new Texture("bucket.png");
-        dropTexture = new Texture("drop.png");
-
-        // load the drop sound effect and background music
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
-        music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
-        music.setLooping(true);
-        music.setVolume(0.5F);
-
-        bucketSprite = new Sprite(bucketTexture);
-        bucketSprite.setSize(1, 1);
-
-        touchPos = new Vector2();
-
-        bucketRectangle = new Rectangle();
-        dropRectangle = new Rectangle();
-
-        dropSprites = new Array<>();
+    public GameScreen(Game game) {
+        super(game);
     }
 
     @Override
     public void show() {
-        // start the playback of the background music
-        // when the screen is shown
-        music.play();
+        this.map = new TmxMapLoader().load("TileMap.tmx");
+        float unitScale = 1 / 16f;
+        renderer = new OrthogonalTiledMapRenderer(map, unitScale);
+
+        player = new Player(1, 17); // start at some world coordinate
+        batch = new SpriteBatch();
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, (Gdx.graphics.getWidth() * unitScale) / 2f, (Gdx.graphics.getWidth() * unitScale) / 2f);
+        camera.update();
+
+        renderer.setView(camera);
     }
 
     @Override
     public void render(float delta) {
-        input();
-        logic();
-        draw();
-    }
+        System.out.println("Player: " + player.position + " | Camera: " + camera.position);
+        player.update(delta);
 
-    private void input() {
-        float speed = 4f;
-        float delta = Gdx.graphics.getDeltaTime();
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1); // dark gray background
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bucketSprite.translateX(speed * delta);
+        camera.position.set(player.position.x, player.position.y, 0);
+        camera.update();
+        renderer.setView(camera);
+
+        renderer.render();
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        player.render(batch);
+        batch.end();
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            game.setScreen(new MainMenuScreen(game));
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            bucketSprite.translateX(-speed * delta);
-        }
-
-        if (Gdx.input.isTouched()) {
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY());
-            game.viewport.unproject(touchPos);
-            bucketSprite.setCenterX(touchPos.x);
-        }
-    }
-
-    private void logic() {
-        float worldWidth = game.viewport.getWorldWidth();
-        float worldHeight = game.viewport.getWorldHeight();
-        float bucketWidth = bucketSprite.getWidth();
-        float bucketHeight = bucketSprite.getHeight();
-        float delta = Gdx.graphics.getDeltaTime();
-
-        bucketSprite.setX(MathUtils.clamp(bucketSprite.getX(), 0, worldWidth - bucketWidth));
-        bucketRectangle.set(bucketSprite.getX(), bucketSprite.getY(), bucketWidth, bucketHeight);
-
-        for (int i = dropSprites.size - 1; i >= 0; i--) {
-            Sprite dropSprite = dropSprites.get(i);
-            float dropWidth = dropSprite.getWidth();
-            float dropHeight = dropSprite.getHeight();
-
-            dropSprite.translateY(-2f * delta);
-            dropRectangle.set(dropSprite.getX(), dropSprite.getY(), dropWidth, dropHeight);
-
-            if (dropSprite.getY() < -dropHeight) dropSprites.removeIndex(i);
-            else if (bucketRectangle.overlaps(dropRectangle)) {
-                dropsGathered++;
-                dropSprites.removeIndex(i);
-                dropSound.play();
-            }
-        }
-
-        dropTimer += delta;
-        if (dropTimer > 1f) {
-            dropTimer = 0;
-            createDroplet();
-        }
-    }
-
-    private void draw() {
-        ScreenUtils.clear(Color.BLACK);
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-        game.batch.begin();
-
-        float worldWidth = game.viewport.getWorldWidth();
-        float worldHeight = game.viewport.getWorldHeight();
-
-        game.batch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-        bucketSprite.draw(game.batch);
-
-        game.font.draw(game.batch, "Drops collected: " + dropsGathered, 0, worldHeight);
-
-        for (Sprite dropSprite : dropSprites) {
-            dropSprite.draw(game.batch);
-        }
-
-        game.batch.end();
-    }
-
-    private void createDroplet() {
-        float dropWidth = 1;
-        float dropHeight = 1;
-        float worldWidth = game.viewport.getWorldWidth();
-        float worldHeight = game.viewport.getWorldHeight();
-
-        Sprite dropSprite = new Sprite(dropTexture);
-        dropSprite.setSize(dropWidth, dropHeight);
-        dropSprite.setX(MathUtils.random(0F, worldWidth - dropWidth));
-        dropSprite.setY(worldHeight);
-        dropSprites.add(dropSprite);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
     }
 
     @Override
     public void dispose() {
-        backgroundTexture.dispose();
-        dropSound.dispose();
-        music.dispose();
-        dropTexture.dispose();
-        bucketTexture.dispose();
+        Gdx.app.debug("SkyFly", "dispose game screen");
+        map.dispose();
+        renderer.dispose();
+        player.dispose();
+        batch.dispose();
+    }
+
+    public void setMap(String fileName){
+        map = new TmxMapLoader().load(fileName);
     }
 }
