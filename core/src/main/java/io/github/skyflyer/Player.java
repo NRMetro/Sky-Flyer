@@ -20,7 +20,7 @@ public class Player {
         this.screen = screen;
     }
     public void update(float delta) {
-        float speed = 5f;
+        float speed = 8f;
         float dx = 0;
         float dy = 0;
 

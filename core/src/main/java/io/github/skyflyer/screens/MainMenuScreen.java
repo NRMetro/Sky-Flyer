@@ -27,7 +27,7 @@ public class MainMenuScreen extends SkyScreen {
         System.out.println("Starting Main Menu");
         title = new TextureRegion(new Texture(Gdx.files.internal("libgdx.png")), 0, 0, 480, 320);
         batch = new SpriteBatch();
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 320);
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, 1920, 1080);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MainMenuScreen extends SkyScreen {
         if (time > 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
                 GameScreen gameScreen = new GameScreen(game);
-                gameScreen.setMap("TileMap.tmx");//Use this later for loading different maps in the game
+                gameScreen.setMap("maps/FlyMap1.tmx");//Use this later for loading different maps in the game
                 game.setScreen(gameScreen);
             }
         }

@@ -31,12 +31,12 @@ public class GameScreen extends SkyScreen {
     public void show() {
         if(map == null) {
             System.out.println("map is null");
-            new TmxMapLoader().load("TileMap.tmx");
+            new TmxMapLoader().load("maps/FlyMap1.tmx");
         }
-        float unitScale = 1 / 16f;
+        float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
-        player = new Player(1, 17,this); // start at some world coordinate
+        player = new Player(1, 195,this); // start at some world coordinate
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
@@ -81,6 +81,7 @@ public class GameScreen extends SkyScreen {
     public void setMap(String fileName){
         map = new TmxMapLoader().load(fileName);
     }
+
     public boolean isTileSolid(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 
