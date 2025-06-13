@@ -1,0 +1,21 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "FlyMap1.tmx": {
+            "scale": 0.125,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 4524,
+                "y": 3868
+            }
+        }
+    },
+    "openFiles": [
+    ],
+    "project": "TileMaps.tiled-project",
+    "recentFiles": [
+        "FlyMap1.tmx"
+    ]
+}

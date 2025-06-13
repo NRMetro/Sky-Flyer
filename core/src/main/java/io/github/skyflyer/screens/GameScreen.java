@@ -83,7 +83,7 @@ public class GameScreen extends SkyScreen {
     }
 
     public boolean isTileSolid(float x, float y) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("collision");
 
         int tileX = (int) (x);
         int tileY = (int) (y);
