@@ -32,8 +32,6 @@ public class MainMenuScreen extends SkyScreen {
 
     @Override
     public void render(float delta) {
-        System.out.println("Render Main Menu");
-
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1); // dark gray background
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -44,7 +42,9 @@ public class MainMenuScreen extends SkyScreen {
         time += delta;
         if (time > 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
-                game.setScreen(new GameScreen(game));
+                GameScreen gameScreen = new GameScreen(game);
+                gameScreen.setMap("TileMap.tmx");//Use this later for loading different maps in the game
+                game.setScreen(gameScreen);
             }
         }
     }

@@ -7,7 +7,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import io.github.skyflyer.Player;
@@ -27,11 +29,14 @@ public class GameScreen extends SkyScreen {
 
     @Override
     public void show() {
-        this.map = new TmxMapLoader().load("TileMap.tmx");
+        if(map == null) {
+            System.out.println("map is null");
+            new TmxMapLoader().load("TileMap.tmx");
+        }
         float unitScale = 1 / 16f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
-        player = new Player(1, 17); // start at some world coordinate
+        player = new Player(1, 17,this); // start at some world coordinate
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
@@ -43,7 +48,7 @@ public class GameScreen extends SkyScreen {
 
     @Override
     public void render(float delta) {
-        System.out.println("Player: " + player.position + " | Camera: " + camera.position);
+        //System.out.println("Player: " + player.position + " | Camera: " + camera.position);
         player.update(delta);
 
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1); // dark gray background
@@ -75,5 +80,22 @@ public class GameScreen extends SkyScreen {
 
     public void setMap(String fileName){
         map = new TmxMapLoader().load(fileName);
+    }
+    public boolean isTileSolid(float x, float y) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+
+        int tileX = (int) (x / layer.getTileWidth());
+        int tileY = (int) (y / layer.getTileHeight());
+        System.out.println(tileX + " " + tileY);
+
+        TiledMapTileLayer.Cell cell = layer.getCell(tileX, tileY);
+
+
+        if(cell != null && cell.getTile() != null) {
+            MapProperties properties = cell.getTile().getProperties();
+            System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
+            return properties.containsKey("solid") && properties.get("solid", Boolean.class);
+        }
+        return false;
     }
 }
