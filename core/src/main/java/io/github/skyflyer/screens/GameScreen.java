@@ -84,17 +84,19 @@ public class GameScreen extends SkyScreen {
     public boolean isTileSolid(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 
-        int tileX = (int) (x / layer.getTileWidth());
-        int tileY = (int) (y / layer.getTileHeight());
+        int tileX = (int) (x);
+        int tileY = (int) (y);
         System.out.println(tileX + " " + tileY);
 
         TiledMapTileLayer.Cell cell = layer.getCell(tileX, tileY);
 
-
         if(cell != null && cell.getTile() != null) {
-            MapProperties properties = cell.getTile().getProperties();
-            System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
-            return properties.containsKey("solid") && properties.get("solid", Boolean.class);
+            if(cell.getTile().getProperties() != null) {
+                MapProperties properties = cell.getTile().getProperties();
+                System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
+                return properties.containsKey("solid") && properties.get("solid", Boolean.class);
+            }
+
         }
         return false;
     }

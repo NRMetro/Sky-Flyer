@@ -36,6 +36,7 @@ public class Player {
     }
 
     private void move(float dx, float dy) {
+        System.out.println("MOVING TO " + dx + " " + dy);
         float x = (int) position.x + dx;
         float y = (int) position.y + dy;
         if(!screen.isTileSolid(x,y)){

@@ -3,7 +3,7 @@
  <image source="tile_sheet_16px_by_16px.png" width="378" height="63"/>
  <tile id="0">
   <properties>
-   <property name="solid" value="true"/>
+   <property name="solid" type="bool" value="true"/>
   </properties>
  </tile>
 </tileset>
