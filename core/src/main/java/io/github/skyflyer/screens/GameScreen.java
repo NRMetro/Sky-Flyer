@@ -89,6 +89,9 @@ public class GameScreen extends SkyScreen {
         int tileY = (int) (y);
         System.out.println(tileX + " " + tileY);
 
+        if(x < 0 || y < 0 || x > 200 || y > 200){
+            return true;
+        }
         TiledMapTileLayer.Cell cell = layer.getCell(tileX, tileY);
 
         if(cell != null && cell.getTile() != null) {
