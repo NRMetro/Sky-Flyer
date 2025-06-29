@@ -5,20 +5,18 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import io.github.skyflyer.enemies.GameActor;
 import io.github.skyflyer.screens.GameScreen;
-import io.github.skyflyer.screens.SkyScreen;
 
-public class Player {
+public class Player extends GameActor {
 
-    public Vector2 position;
-    private Texture texture;
-    private GameScreen screen;
-    private float dashCooldown;
+    private final GameScreen screen;
+    private final float dashCooldown;
     private float timeSeconds;
 
     public Player(float x, float y, GameScreen screen) {
-        position = new Vector2(x, y);
-        texture = new Texture(Gdx.files.internal("SkyFlyerDraft.png"));
+        setPosition(new Vector2(x, y));
+        setTexture(new Texture(Gdx.files.internal("SkyFlyerDraft.png")));
         this.screen = screen;
         dashCooldown = 3;
         timeSeconds = 3;
@@ -50,9 +48,9 @@ public class Player {
 
     private void move(float dx, float dy) {
         //System.out.println("MOVING TO " + dx + " " + dy);
-        float x = (int) position.x + dx;
-        float y = (int) position.y + dy;
-        boolean solid = screen.isTileSolid((int) position.x + 3 * dx, (int) position.y + 2 * dy);
+        float x = (int) position.x + 3 * dx;
+        float y = (int) position.y + 2 * dy;
+        boolean solid = screen.isTileSolid(x, y);
 
         if(!solid){
             position.x += dx;
@@ -60,11 +58,4 @@ public class Player {
         }
     }
 
-    public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x - texture.getWidth() / 32f, position.y - texture.getHeight() / 32f,2f,2f);
-    }
-
-    public void dispose() {
-        texture.dispose();
-    }
 }
