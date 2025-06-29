@@ -5,29 +5,40 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import io.github.skyflyer.enemies.GameActor;
 import io.github.skyflyer.screens.GameScreen;
-import io.github.skyflyer.screens.SkyScreen;
 
-public class Player {
+public class Player extends GameActor {
 
-    public Vector2 position;
-    private Texture texture;
-    private GameScreen screen;
+    private final GameScreen screen;
+    private final float dashCooldown;
+    private float timeSeconds;
 
     public Player(float x, float y, GameScreen screen) {
-        position = new Vector2(x, y);
-        texture = new Texture(Gdx.files.internal("SkyFlyerDraft.png"));
+        setPosition(new Vector2(x, y));
+        setTexture(new Texture(Gdx.files.internal("SkyFlyerDraft.png")));
         this.screen = screen;
+        dashCooldown = 3;
+        timeSeconds = 3;
     }
+
     public void update(float delta) {
         float speed = 8f;
         float dx = 0;
         float dy = 0;
+        float dash = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) dy += speed * delta;
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) dy -= speed * delta;
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) dx -= speed * delta;
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) dx += speed * delta;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT) && timeSeconds >= dashCooldown) {
+            dash = 3;
+            timeSeconds = 0;
+        }
+
+        timeSeconds += Gdx.graphics.getDeltaTime();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) dy += speed * delta + dash;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) dy -= speed * delta + dash;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) dx -= speed * delta + dash;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) dx += speed * delta + dash;
 
         if(dx != 0 || dy != 0) {
             move(dx,dy);
@@ -36,20 +47,15 @@ public class Player {
     }
 
     private void move(float dx, float dy) {
-        System.out.println("MOVING TO " + dx + " " + dy);
-        float x = (int) position.x + dx;
-        float y = (int) position.y + dy;
-        if(!screen.isTileSolid(x,y)){
+        //System.out.println("MOVING TO " + dx + " " + dy);
+        float x = (int) position.x + 3 * dx;
+        float y = (int) position.y + 2 * dy;
+        boolean solid = screen.isTileSolid(x, y);
+
+        if(!solid){
             position.x += dx;
             position.y += dy;
         }
     }
 
-    public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x - texture.getWidth() / 16f, position.y - texture.getHeight() / 16f,2f,2f);
-    }
-
-    public void dispose() {
-        texture.dispose();
-    }
 }
