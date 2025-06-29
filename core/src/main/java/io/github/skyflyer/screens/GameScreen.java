@@ -27,6 +27,11 @@ public class GameScreen extends SkyScreen {
         super(game);
     }
 
+    public GameScreen(Game game,String filename) {
+        super(game);
+        setMap(filename);
+    }
+
     @Override
     public void show() {
         if(map == null) {
@@ -89,6 +94,10 @@ public class GameScreen extends SkyScreen {
         int tileY = (int) (y);
         System.out.println(tileX + " " + tileY);
 
+        /*
+            ARBITRARY NUMBERS THAT NEED TO BE SORTED BETTER WHEN
+            WE HAVE A BETTER IDEA FOR HOW OUR MAPS WILL EXIST
+         */
         if(x < 0 || y < 0 || x > 200 || y > 200){
             return true;
         }
@@ -97,7 +106,7 @@ public class GameScreen extends SkyScreen {
         if(cell != null && cell.getTile() != null) {
             if(cell.getTile().getProperties() != null) {
                 MapProperties properties = cell.getTile().getProperties();
-                System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
+                //System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
                 return properties.containsKey("solid") && properties.get("solid", Boolean.class);
             }
 
