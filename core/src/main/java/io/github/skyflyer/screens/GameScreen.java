@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,6 +14,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import io.github.skyflyer.Player;
+import io.github.skyflyer.groundEnemyManager;
+import io.github.skyflyer.groundEnemySpawner;
 
 
 public class GameScreen extends SkyScreen {
@@ -22,6 +25,9 @@ public class GameScreen extends SkyScreen {
     OrthographicCamera camera;
     Player player;
     SpriteBatch batch;
+    groundEnemyManager groundEnemyManager;
+    groundEnemySpawner groundEnemySpawner;
+    Texture groundEnemyTexture;
 
     public GameScreen(Game game) {
         super(game);
@@ -31,7 +37,7 @@ public class GameScreen extends SkyScreen {
     public void show() {
         if(map == null) {
             System.out.println("map is null");
-            new TmxMapLoader().load("maps/FlyMap1.tmx");
+            map = new TmxMapLoader().load("maps/FlyMap1.tmx");
         }
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
@@ -44,6 +50,11 @@ public class GameScreen extends SkyScreen {
         camera.update();
 
         renderer.setView(camera);
+
+        groundEnemyTexture = new Texture("groundEnemy.png");
+        groundEnemyManager = new groundEnemyManager(groundEnemyTexture);
+        groundEnemySpawner = new groundEnemySpawner(groundEnemyManager);
+        groundEnemySpawner.placeEnemies(map, 1, 30);
     }
 
     @Override
@@ -62,6 +73,8 @@ public class GameScreen extends SkyScreen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        groundEnemyManager.update(delta);
+        groundEnemyManager.render(batch);
         player.render(batch);
         batch.end();
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -76,6 +89,7 @@ public class GameScreen extends SkyScreen {
         renderer.dispose();
         player.dispose();
         batch.dispose();
+        groundEnemyTexture.dispose();
     }
 
     public void setMap(String fileName){
