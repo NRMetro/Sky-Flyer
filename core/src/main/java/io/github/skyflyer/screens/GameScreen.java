@@ -8,21 +8,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import io.github.skyflyer.Player;
-import io.github.skyflyer.groundEnemyManager;
-import io.github.skyflyer.groundEnemySpawner;
+import io.github.skyflyer.character.Enemy;
+import io.github.skyflyer.character.Player;
+import io.github.skyflyer.character.groundEnemyManager;
+import io.github.skyflyer.character.groundEnemySpawner;
 
-import io.github.skyflyer.enemies.Enemy;
-import io.github.skyflyer.enemies.PewPew;
+
 
 import java.util.ArrayList;
 
@@ -38,8 +35,6 @@ public class GameScreen extends SkyScreen {
     groundEnemyManager groundEnemyManager;
     groundEnemySpawner groundEnemySpawner;
     Texture groundEnemyTexture;
-    
-    ArrayList<Enemy> enemies = new ArrayList<>();
 
     public GameScreen(Game game) {
         super(game);
@@ -95,9 +90,6 @@ public class GameScreen extends SkyScreen {
         groundEnemyManager.update(delta);
         groundEnemyManager.render(batch);
         player.render(batch);
-        for(Enemy e: enemies){
-            e.render(batch);
-        }
         batch.end();
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new MainMenuScreen(game));

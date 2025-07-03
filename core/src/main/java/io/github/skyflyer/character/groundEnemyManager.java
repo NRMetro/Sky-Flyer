@@ -1,7 +1,8 @@
-package io.github.skyflyer;
+package io.github.skyflyer.character;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class groundEnemyManager {
     public void spawnEnemy(float tileX, float tileY) {
         System.out.println("[Ground Enemy Manager] Spawning enemy at (" + tileX + ", " + tileY + ")");
         float worldX = tileX * 1f;
-        float worldY = tileY * 1f + 0.8f;
+        float worldY = tileY * 1f + 1.8f;
         groundEnemies.add(new groundEnemy(worldX, worldY, groundEnemyTexture));
     }
 
@@ -29,7 +30,7 @@ public class groundEnemyManager {
 
     public void render(SpriteBatch batch) {
         for (groundEnemy enemy : groundEnemies) {
-            enemy.draw(batch);
+            enemy.render(batch);
         }
     }
 

@@ -1,16 +1,17 @@
-package io.github.skyflyer;
+package io.github.skyflyer.character;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class groundEnemySpawner {
 
-    private final groundEnemyManager groundEnemyManager;
+    private final io.github.skyflyer.character.groundEnemyManager groundEnemyManager;
 
     public groundEnemySpawner(groundEnemyManager groundEnemyManager) {
         this.groundEnemyManager = groundEnemyManager;

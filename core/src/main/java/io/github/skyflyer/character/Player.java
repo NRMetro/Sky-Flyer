@@ -1,11 +1,9 @@
-package io.github.skyflyer;
+package io.github.skyflyer.character;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import io.github.skyflyer.enemies.GameActor;
 import io.github.skyflyer.screens.GameScreen;
 
 public class Player extends GameActor {
