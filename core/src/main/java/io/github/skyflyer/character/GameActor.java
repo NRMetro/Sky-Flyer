@@ -1,4 +1,4 @@
-package io.github.skyflyer.enemies;
+package io.github.skyflyer.character;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +11,7 @@ public class GameActor {
     public Vector2 getPosition() {
         return position;
     }
+
     protected void setPosition(Vector2 position) {
         System.out.println(position.x + " " + position.y);
         this.position = position;
