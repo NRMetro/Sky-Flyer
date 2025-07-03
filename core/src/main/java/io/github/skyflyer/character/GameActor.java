@@ -30,4 +30,6 @@ public class GameActor {
     public void dispose() {
         texture.dispose();
     }
+
+
 }

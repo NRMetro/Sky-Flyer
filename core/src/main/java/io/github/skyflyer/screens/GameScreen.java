@@ -14,15 +14,15 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import io.github.skyflyer.character.Enemy;
 import io.github.skyflyer.character.Player;
-import io.github.skyflyer.character.groundEnemyManager;
-import io.github.skyflyer.character.groundEnemySpawner;
-
-
+import io.github.skyflyer.character.enemyGeneric.Enemy;
+import io.github.skyflyer.character.enemyGeneric.EnemyManager;
+import io.github.skyflyer.character.enemyGeneric.EnemySpawner;
+import io.github.skyflyer.character.enemyType.Grounder;
+import io.github.skyflyer.character.enemyType.PewPew;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class GameScreen extends SkyScreen {
@@ -32,8 +32,7 @@ public class GameScreen extends SkyScreen {
     OrthographicCamera camera;
     Player player;
     SpriteBatch batch;
-    groundEnemyManager groundEnemyManager;
-    groundEnemySpawner groundEnemySpawner;
+    EnemySpawner enemySpawner;
     Texture groundEnemyTexture;
 
     public GameScreen(Game game) {
@@ -63,10 +62,12 @@ public class GameScreen extends SkyScreen {
 
         renderer.setView(camera);
 
-        groundEnemyTexture = new Texture("groundEnemy.png");
-        groundEnemyManager = new groundEnemyManager(groundEnemyTexture);
-        groundEnemySpawner = new groundEnemySpawner(groundEnemyManager);
-        groundEnemySpawner.placeEnemies(map, 1, 30);
+        List<EnemyManager<? extends Enemy>> managers = new ArrayList<>();
+        managers.add(new EnemyManager<>(Grounder::new));
+        managers.add(new EnemyManager<>(PewPew::new));
+
+        enemySpawner = new EnemySpawner(managers);
+        enemySpawner.placeEnemies(map, 1, 30);
 
     }
 
@@ -87,8 +88,8 @@ public class GameScreen extends SkyScreen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        groundEnemyManager.update(delta);
-        groundEnemyManager.render(batch);
+        enemySpawner.update(delta);
+        enemySpawner.render(batch);
         player.render(batch);
         batch.end();
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
