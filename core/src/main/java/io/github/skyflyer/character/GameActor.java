@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GameActor {
     protected Vector2 position;
-    private Texture texture;
+    protected Texture texture;
 
     public Vector2 getPosition() {
         return position;
@@ -14,11 +14,9 @@ public class GameActor {
 
     protected void setPosition(Vector2 position) {
         System.out.println(position.x + " " + position.y);
-        this.position = position;
+        this.position = position.cpy();
     }
-    protected Texture getTexture() {
-        return texture;
-    }
+
     protected void setTexture(Texture texture) {
         this.texture = texture;
     }
@@ -30,6 +28,5 @@ public class GameActor {
     public void dispose() {
         texture.dispose();
     }
-
 
 }

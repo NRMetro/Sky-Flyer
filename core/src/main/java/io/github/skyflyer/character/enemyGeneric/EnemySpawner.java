@@ -78,6 +78,11 @@ public class EnemySpawner {
         for(EnemyManager<? extends Enemy> manager: enemyManagers){
             manager.update(delta);
         }
+    }
 
+    public void checkDistances(Vector2 position) {
+        for(EnemyManager<? extends Enemy> manager: enemyManagers){
+            manager.checkDistances(position);
+        }
     }
 }

@@ -1,9 +1,7 @@
 package io.github.skyflyer.character.enemyGeneric;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.github.skyflyer.character.enemyType.Grounder;
-
+import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -27,7 +25,9 @@ public class EnemyManager<T extends Enemy> {
 
     public void update(float delta) {
         for (T enemy : enemies) {
-            enemy.update(delta);
+            if(enemy.isActive()){
+                enemy.update(delta);
+            }
         }
     }
 
@@ -37,8 +37,15 @@ public class EnemyManager<T extends Enemy> {
         }
     }
 
-    public List<T> getGroundEnemies() {
+    public List<T> getEnemies() {
         return enemies;
+    }
+
+    public void checkDistances(Vector2 position) {
+        for (T enemy : enemies) {
+            float distance = enemy.calculateDistance(position);
+            enemy.setActive(distance < 20);
+        }
     }
 }
 

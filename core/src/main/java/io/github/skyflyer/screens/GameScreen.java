@@ -88,8 +88,13 @@ public class GameScreen extends SkyScreen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+
+        enemySpawner.checkDistances(position);
+
+
         enemySpawner.update(delta);
         enemySpawner.render(batch);
+
         player.render(batch);
         batch.end();
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
