@@ -17,15 +17,15 @@ public class Projectile extends GameActor {
     }
 
 
-    public void update(float delta, Vector2 playerLocation)
+    public void update(float delta, Vector2 targetLocation)
     {
         position = getPosition().cpy();
 
         int projX = (int) position.x;
         int projY = (int) position.y;
 
-        int playX = (int) playerLocation.x;
-        int playY = (int) playerLocation.y;
+        int playX = (int) targetLocation.x;
+        int playY = (int) targetLocation.y;
 
         distanceTraveled += velocity.len() * delta;
         getPosition().mulAdd(velocity, delta);
