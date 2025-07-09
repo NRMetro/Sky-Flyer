@@ -2,16 +2,19 @@ package io.github.skyflyer.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainMenuScreen extends SkyScreen {
-    TextureRegion title;
-    SpriteBatch batch;
-    float time = 0;
+    Stage stage;
+    Skin skin;
 
     public MainMenuScreen(Game game){
         super(game);
@@ -19,37 +22,77 @@ public class MainMenuScreen extends SkyScreen {
 
     @Override
     public void show() {
-        System.out.println("Starting Main Menu");
-        title = new TextureRegion(new Texture(Gdx.files.internal("tempbackground.png")), 0, 0, 1920, 1080);
-        batch = new SpriteBatch();
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, 1920, 1080);
-    }
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1); // dark gray background
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        skin = new Skin(Gdx.files.internal("skin/glassy/skin/glassy-ui.json"));
 
-        batch.begin();
-        batch.draw(title, 0, 0);
-        batch.end();
+        Texture bgTexture = new Texture(Gdx.files.internal("tempbackground.png"));
+        Drawable background = new TextureRegionDrawable(new TextureRegion(bgTexture));
 
-        time += delta;
-        if (time > 1) {
-            if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
+        Table table = new Table();
+        table.setFillParent(true);
+        table.setBackground(background);
+        stage.addActor(table);
+
+        Label gameName = new Label("SKY FLYER", skin, "big");
+        table.add(gameName).padBottom(120);
+        table.row();
+
+        TextButton newGameButton = new TextButton("New Game", skin);
+        newGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
                 GameScreen gameScreen = new GameScreen(game);
                 gameScreen.setMap("maps/FlyMap1.tmx");//Use this later for loading different maps in the game
                 game.setScreen(gameScreen);
             }
-        }
+        });
+        table.add(newGameButton).padBottom(10);
+        table.row();
+
+        TextButton contGameButton = new TextButton("Continue Game", skin);
+        contGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Implement Continue Game Button");
+            }
+        });
+        table.add(contGameButton).padBottom(10);
+        table.row();
+
+        TextButton settingsButton = new TextButton("Settings", skin);
+        settingsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Implement Settings Button");
+            }
+        });
+        table.add(settingsButton).padBottom(10);
+        table.row();
+
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.exit();
+            }
+        });
+        table.add(exitButton);
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
+        stage.act(delta);
+        stage.draw();
     }
 
 
     @Override
-    public void hide() {
-        Gdx.app.debug("SkyFlyer", "dispose main menu");
-        batch.dispose();
-        title.getTexture().dispose();
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
     }
 
 

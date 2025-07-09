@@ -45,14 +45,16 @@ public class Player extends GameActor {
     }
 
     private void move(float dx, float dy) {
-        //System.out.println("MOVING TO " + dx + " " + dy);
+//        System.out.println("MOVING BY " + dx + " " + dy);
         float x = (int) position.x + 3 * dx;
         float y = (int) position.y + 2 * dy;
+
         boolean solid = screen.isTileSolid(x, y);
 
         if(!solid){
             position.x += dx;
             position.y += dy;
+//            System.out.println("MOVING TO " + position.x + " " + position.y);
         }
     }
 
