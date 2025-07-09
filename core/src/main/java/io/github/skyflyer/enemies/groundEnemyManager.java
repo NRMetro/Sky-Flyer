@@ -1,4 +1,4 @@
-package io.github.skyflyer;
+package io.github.skyflyer.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

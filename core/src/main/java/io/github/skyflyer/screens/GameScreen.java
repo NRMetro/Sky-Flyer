@@ -8,22 +8,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import io.github.skyflyer.Player;
-import io.github.skyflyer.groundEnemyManager;
-import io.github.skyflyer.groundEnemySpawner;
-
+import io.github.skyflyer.enemies.groundEnemyManager;
+import io.github.skyflyer.enemies.groundEnemySpawner;
+import io.github.skyflyer.weapons.WeaponManager;
+import io.github.skyflyer.weapons.WeaponSpawner;
 import io.github.skyflyer.enemies.Enemy;
-import io.github.skyflyer.enemies.PewPew;
-
 import java.util.ArrayList;
 
 
@@ -38,7 +34,9 @@ public class GameScreen extends SkyScreen {
     groundEnemyManager groundEnemyManager;
     groundEnemySpawner groundEnemySpawner;
     Texture groundEnemyTexture;
-    
+    WeaponManager weaponManager;
+    WeaponSpawner weaponSpawner;
+
     ArrayList<Enemy> enemies = new ArrayList<>();
 
     public GameScreen(Game game) {
@@ -68,11 +66,20 @@ public class GameScreen extends SkyScreen {
 
         renderer.setView(camera);
 
-        groundEnemyTexture = new Texture("groundEnemy.png");
+        groundEnemyTexture = new Texture("Enemies/groundEnemy.png");
         groundEnemyManager = new groundEnemyManager(groundEnemyTexture);
         groundEnemySpawner = new groundEnemySpawner(groundEnemyManager);
         groundEnemySpawner.placeEnemies(map, 1, 30);
 
+        // Initialize weapon manager and spawner
+        Texture knucklesTexture = new Texture("Weapons/knuckles.png");
+        Texture swordTexture = new Texture("Weapons/sword.png");
+        Texture slingshotTexture = new Texture("Weapons/slingshot.png");
+        weaponManager = new WeaponManager(knucklesTexture, swordTexture, slingshotTexture);
+        weaponSpawner = new WeaponSpawner(weaponManager);
+
+        // Place weapons in the game world
+        weaponSpawner.placeWeapons(map, 1, 60); // Spawn 10 weapons in walkable positions
     }
 
     @Override
@@ -92,9 +99,15 @@ public class GameScreen extends SkyScreen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+
         groundEnemyManager.update(delta);
         groundEnemyManager.render(batch);
+
+        weaponManager.update(delta);
+        weaponManager.render(batch);
+
         player.render(batch);
+
         for(Enemy e: enemies){
             e.render(batch);
         }
@@ -112,6 +125,7 @@ public class GameScreen extends SkyScreen {
         player.dispose();
         batch.dispose();
         groundEnemyTexture.dispose();
+        weaponManager.dispose();
     }
 
     public void setMap(String fileName){

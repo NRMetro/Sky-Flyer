@@ -1,4 +1,4 @@
-package io.github.skyflyer;
+package io.github.skyflyer.enemies;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -27,7 +27,7 @@ public class groundEnemySpawner {
 
         int width = layer.getWidth();
         int height = layer.getHeight();
-        System.out.println("[Ground Spawner]ground Spawner Scanning " + width + "x" + height + "tiles...");
+        System.out.println("[Ground Spawner] Ground Spawner Scanning " + width + "x" + height + " tiles...");
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

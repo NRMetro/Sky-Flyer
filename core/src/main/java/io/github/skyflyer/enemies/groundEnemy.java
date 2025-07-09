@@ -1,11 +1,12 @@
-package io.github.skyflyer;
+package io.github.skyflyer.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class groundEnemy {
-    private float x, y;
-    private Texture texture;
+    private final float x;
+    private final float y;
+    private final Texture texture;
 
     public groundEnemy(float x, float y, Texture texture) {
         this.x = x;

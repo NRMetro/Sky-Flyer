@@ -7,19 +7,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import io.github.skyflyer.enemies.GameActor;
 import io.github.skyflyer.screens.GameScreen;
+import io.github.skyflyer.weapons.Weapon;
 
 public class Player extends GameActor {
 
     private final GameScreen screen;
     private final float dashCooldown;
     private float timeSeconds;
+    private Weapon currentWeapon;
 
     public Player(float x, float y, GameScreen screen) {
         setPosition(new Vector2(x, y));
-        setTexture(new Texture(Gdx.files.internal("SkyFlyerDraft.png")));
+        setTexture(new Texture(Gdx.files.internal("SkyFlyer/SkyFlyer.png")));
         this.screen = screen;
         dashCooldown = 3;
         timeSeconds = 3;
+        this.currentWeapon = null;
     }
 
     public void update(float delta) {
@@ -56,6 +59,17 @@ public class Player extends GameActor {
             position.x += dx;
             position.y += dy;
         }
+    }
+
+    public Weapon getCurrentWeapon(){
+        return currentWeapon;
+    }
+
+    public void pickUpWeapon(Weapon newWeapon){
+        if (currentWeapon != null){
+            currentWeapon = null;
+        }
+        currentWeapon = newWeapon;
     }
 
 }
