@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -21,8 +24,11 @@ import io.github.skyflyer.character.enemyGeneric.EnemySpawner;
 import io.github.skyflyer.character.enemyType.Grounder;
 import io.github.skyflyer.character.enemyType.PewPew;
 
+import io.github.skyflyer.weapons.WeaponManager;
+import io.github.skyflyer.weapons.WeaponSpawner;
+
 import java.util.ArrayList;
-import java.util.List;
+
 
 
 public class GameScreen extends SkyScreen {
@@ -34,6 +40,10 @@ public class GameScreen extends SkyScreen {
     SpriteBatch batch;
     EnemySpawner enemySpawner;
     Texture groundEnemyTexture;
+    WeaponManager weaponManager;
+    WeaponSpawner weaponSpawner;
+
+    ArrayList<Enemy> enemies = new ArrayList<>();
 
     public GameScreen(Game game) {
         super(game);
@@ -69,6 +79,16 @@ public class GameScreen extends SkyScreen {
         enemySpawner = new EnemySpawner(managers);
         enemySpawner.placeEnemies(map, 1, 30);
 
+        // Initialize weapon manager and spawner
+        Texture knucklesTexture = new Texture("Weapons/knuckles.png");
+        Texture swordTexture = new Texture("Weapons/sword.png");
+        Texture slingshotTexture = new Texture("Weapons/slingshot.png");
+        weaponManager = new WeaponManager(knucklesTexture, swordTexture, slingshotTexture);
+        weaponSpawner = new WeaponSpawner(weaponManager);
+
+        // Place weapons in the game world
+        weaponSpawner.placeWeapons(map, 1, 60);
+
     }
 
     @Override
@@ -95,7 +115,13 @@ public class GameScreen extends SkyScreen {
         enemySpawner.update(delta);
         enemySpawner.render(batch);
 
+        weaponManager.update(delta);
+        weaponManager.render(batch);
+
         player.render(batch);
+        for(Enemy e: enemies){
+            e.render(batch);
+        }
         batch.end();
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new MainMenuScreen(game));
