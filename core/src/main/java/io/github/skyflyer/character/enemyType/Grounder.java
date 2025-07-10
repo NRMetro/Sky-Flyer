@@ -18,7 +18,7 @@ public class Grounder extends GroundEnemy{
 
     public Grounder() {
         super();
-        setTexture(new Texture("groundEnemy.png"));
+        setTexture(new Texture("Enemies/groundEnemy.png"));
         projectiles = new ArrayList<>();
     }
 
@@ -52,7 +52,7 @@ public class Grounder extends GroundEnemy{
     }
 
     private void fireProjectile(Vector2 playerLocation) {
-        System.out.println("Fire Projectile");
+        //System.out.println("Fire Projectile");
         float speed = 3f;
         Vector2 velocity = new Vector2(playerLocation.sub(position).nor()).scl(speed);
 

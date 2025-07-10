@@ -29,13 +29,13 @@ public class EnemySpawner {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("collision");
 
         if (layer == null) {
-            System.out.println("[Enemy Spawner] ERROR: 'collision' layer has not been found");
+            //System.out.println("[Enemy Spawner] ERROR: 'collision' layer has not been found");
             return walkableTiles;
         }
 
         int width = layer.getWidth();
         int height = layer.getHeight();
-        System.out.println("[Enemy Spawner]Enemy Spawner Scanning " + width + "x" + height + "tiles...");
+        //System.out.println("[Enemy Spawner]Enemy Spawner Scanning " + width + "x" + height + "tiles...");
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -48,7 +48,7 @@ public class EnemySpawner {
                 }
             }
         }
-        System.out.println("Enemy Spawner found " + walkableTiles.size());
+        //System.out.println("Enemy Spawner found " + walkableTiles.size());
         return walkableTiles;
     }
 
@@ -60,7 +60,7 @@ public class EnemySpawner {
         int counter = 0;
         for (int i = 0; i < enemyCount && i < walkableTiles.size(); i++) {
             Vector2 pos = walkableTiles.get(i);
-            System.out.println("[Enemy Spawner] Placing enemy at tile (" + pos.x + ", " + pos.y + ")");
+            //System.out.println("[Enemy Spawner] Placing enemy at tile (" + pos.x + ", " + pos.y + ")");
             enemyManagers.get(counter).spawnEnemy(pos.x, pos.y);
             counter++;
             if(counter == managerCount){counter = 0;}

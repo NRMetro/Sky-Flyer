@@ -3,7 +3,7 @@ package io.github.skyflyer.weapons;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import io.github.skyflyer.Player;
+import io.github.skyflyer.character.Player;
 
 public abstract class Weapon {
     protected Texture texture;

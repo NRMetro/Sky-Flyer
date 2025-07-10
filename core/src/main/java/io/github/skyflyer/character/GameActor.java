@@ -13,7 +13,7 @@ public class GameActor {
     }
 
     protected void setPosition(Vector2 position) {
-        System.out.println(position.x + " " + position.y);
+        //System.out.println(position.x + " " + position.y);
         this.position = position.cpy();
     }
 

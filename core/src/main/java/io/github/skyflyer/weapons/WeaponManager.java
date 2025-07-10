@@ -22,7 +22,7 @@ public class WeaponManager {
 
     // Spawn weapons (creating specific weapon types)
     public void spawnWeapon(float tileX, float tileY) {
-        System.out.println("[Weapon Manager] Spawning weapon at (" + tileX + ", " + tileY + ")");
+        //System.out.println("[Weapon Manager] Spawning weapon at (" + tileX + ", " + tileY + ")");
         float worldX = tileX * 1f;
         float worldY = tileY * 1f + 0.8f;
 

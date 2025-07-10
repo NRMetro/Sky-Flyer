@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import io.github.skyflyer.character.Player;
 import io.github.skyflyer.character.enemyGeneric.Enemy;
 import io.github.skyflyer.character.enemyGeneric.EnemyManager;
@@ -28,7 +29,7 @@ import io.github.skyflyer.weapons.WeaponManager;
 import io.github.skyflyer.weapons.WeaponSpawner;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class GameScreen extends SkyScreen {
@@ -39,9 +40,9 @@ public class GameScreen extends SkyScreen {
     Player player;
     SpriteBatch batch;
     EnemySpawner enemySpawner;
-    Texture groundEnemyTexture;
     WeaponManager weaponManager;
     WeaponSpawner weaponSpawner;
+    Stage stage;
 
     ArrayList<Enemy> enemies = new ArrayList<>();
 
@@ -60,6 +61,10 @@ public class GameScreen extends SkyScreen {
             System.out.println("map is null");
             map = new TmxMapLoader().load("maps/FlyMap1.tmx");
         }
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
@@ -123,8 +128,13 @@ public class GameScreen extends SkyScreen {
             e.render(batch);
         }
         batch.end();
+
+        stage.act(delta);
+        stage.draw();
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
     }
 
@@ -135,7 +145,6 @@ public class GameScreen extends SkyScreen {
         renderer.dispose();
         player.dispose();
         batch.dispose();
-        groundEnemyTexture.dispose();
     }
 
     public void setMap(String fileName){

@@ -16,7 +16,7 @@ public class EnemyManager<T extends Enemy> {
     }
 
     public void spawnEnemy(float tileX, float tileY) {
-        System.out.println("[Enemy Manager] Spawning enemy at (" + tileX + ", " + tileY + ")");
+        //System.out.println("[Enemy Manager] Spawning enemy at (" + tileX + ", " + tileY + ")");
         float worldY = tileY + 1.8f;
         T newEnemy = enemySupplier.get();
         newEnemy.setPosition(tileX, worldY);

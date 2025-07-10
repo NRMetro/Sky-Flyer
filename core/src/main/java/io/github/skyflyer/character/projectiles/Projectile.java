@@ -31,7 +31,7 @@ public class Projectile extends GameActor {
         getPosition().mulAdd(velocity, delta);
 
         if(projX == playX && projY == playY){
-            System.out.println("Player hit");
+            //System.out.println("Player hit");
             toRemove = true;
         }
         else if(distanceTraveled > 20f){

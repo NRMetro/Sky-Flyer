@@ -8,7 +8,7 @@ public class PewPew extends FlyingEnemy {
 
     public PewPew() {
         super();
-        setTexture(new Texture("SkyFlyerDraft.png"));
+        setTexture(new Texture("SkyFlyer/SkyFlyer.png"));
     }
 
     public void update(float delta) {
