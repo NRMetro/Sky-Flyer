@@ -68,7 +68,9 @@ public class GameScreen extends SkyScreen {
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
-        player = new Player(1, 195,this); // start at some world coordinate
+        if(player == null) {
+            player = new Player(1, 195,this); // start at some world coordinate
+        }
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();

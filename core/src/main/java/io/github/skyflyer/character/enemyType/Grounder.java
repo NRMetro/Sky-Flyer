@@ -28,7 +28,6 @@ public class Grounder extends GroundEnemy{
         for (Projectile p : projectiles) {
             p.render(batch);
         }
-
     }
 
     public void update(float delta) {
