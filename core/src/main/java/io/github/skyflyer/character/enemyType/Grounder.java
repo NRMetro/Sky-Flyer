@@ -41,7 +41,11 @@ public class Grounder extends GroundEnemy{
         }
 
         for (Projectile p : projectiles) {
-            if(p.isToRemove()){
+            if(p.isPlayerhit()){
+                playerDamage += 1;
+                toRemove.add(p);
+            }
+            else if(p.isToRemove()){
                 toRemove.add(p);
             }
             else{

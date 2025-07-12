@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "FlyMap1.tmx",
+    "activeFile": "FlyMap3.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -40,6 +40,14 @@
                 "y": 5446
             }
         },
+        "FlyMap3.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 5486.333333333333,
+                "y": 5477
+            }
+        },
         "newtiles.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
@@ -54,14 +62,18 @@
     "openFiles": [
         "FlyMap.tsx",
         "FlyMap1.tmx",
-        "newtiles.tsx"
+        "newtiles.tsx",
+        "FlyMap2.tmx",
+        "FlyMap3.tmx"
     ],
     "project": "TileMaps.tiled-project",
     "property.type": "bool",
     "recentFiles": [
         "FlyMap.tsx",
-        "newtiles.tsx",
         "FlyMap1.tmx",
+        "newtiles.tsx",
+        "FlyMap2.tmx",
+        "FlyMap3.tmx",
         "C:/Users/nreis/Desktop/School/Metro State/ICS 499 Capstone/TileTests/FlyMap1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

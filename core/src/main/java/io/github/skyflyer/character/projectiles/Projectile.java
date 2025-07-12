@@ -8,6 +8,7 @@ public class Projectile extends GameActor {
     private final Vector2 velocity;
     private Float distanceTraveled;
     private boolean toRemove = false;
+    private boolean playerhit = false;
 
     public Projectile(Vector2 position, Vector2 velocity) {
         setTexture(new Texture("Bullet.png"));
@@ -32,7 +33,7 @@ public class Projectile extends GameActor {
 
         if(projX == playX && projY == playY){
             //System.out.println("Player hit");
-            toRemove = true;
+            playerhit = true;
         }
         else if(distanceTraveled > 20f){
             toRemove = true;
@@ -42,4 +43,6 @@ public class Projectile extends GameActor {
     public boolean isToRemove() {
         return toRemove;
     }
+
+    public boolean isPlayerhit() { return playerhit; }
 }

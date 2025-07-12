@@ -8,23 +8,19 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.github.skyflyer.character.Player;
 import io.github.skyflyer.character.enemyGeneric.Enemy;
 import io.github.skyflyer.character.enemyGeneric.EnemyManager;
 import io.github.skyflyer.character.enemyGeneric.EnemySpawner;
 import io.github.skyflyer.character.enemyType.Grounder;
-import io.github.skyflyer.character.enemyType.PewPew;
+import io.github.skyflyer.character.enemyType.BoomBoom;
 
 import io.github.skyflyer.weapons.WeaponManager;
 import io.github.skyflyer.weapons.WeaponSpawner;
@@ -81,7 +77,7 @@ public class GameScreen extends SkyScreen {
 
         List<EnemyManager<? extends Enemy>> managers = new ArrayList<>();
         managers.add(new EnemyManager<>(Grounder::new));
-        managers.add(new EnemyManager<>(PewPew::new));
+        managers.add(new EnemyManager<>(BoomBoom::new));
 
         enemySpawner = new EnemySpawner(managers);
         enemySpawner.placeEnemies(map, 1, 30);
@@ -122,6 +118,11 @@ public class GameScreen extends SkyScreen {
         enemySpawner.update(delta);
         enemySpawner.render(batch);
 
+        if(enemySpawner.getPlayerDamage() > 0){
+            playerHit(enemySpawner.getPlayerDamage());
+            enemySpawner.setPlayerDamage(0);
+        }
+
         weaponManager.update(delta);
         weaponManager.render(batch);
 
@@ -138,6 +139,10 @@ public class GameScreen extends SkyScreen {
             game.setScreen(new MainMenuScreen(game));
             dispose();
         }
+    }
+
+    private void playerHit(int playerDamage) {
+        System.out.println("playerHit with damage: " + playerDamage);
     }
 
     @Override

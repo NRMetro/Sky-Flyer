@@ -5,13 +5,17 @@ import io.github.skyflyer.character.GameActor;
 
 public class Enemy extends GameActor implements Comparable<Enemy> {
 
+    public int playerDamage;
     private float distToPlayer;
     private Vector2 playerLocation;
     private boolean active;
+    protected float timeSeconds;
+    public boolean toRemove;
 
     public Enemy(){
         super();
         active = false;
+        playerDamage = 0;
     }
 
     public void update(float delta) {
@@ -57,4 +61,5 @@ public class Enemy extends GameActor implements Comparable<Enemy> {
 
         return playerLocation;
     }
+
 }
