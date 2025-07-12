@@ -1,29 +1,69 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
     "activeFile": "FlyMap1.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
+        "C:/Users/nreis/Desktop/School/Metro State/ICS 499 Capstone/TileTests/FlyMap.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/nreis/Desktop/School/Metro State/ICS 499 Capstone/TileTests/FlyMap1.tmx": {
+            "scale": 0.17990625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3198.8883098836195,
+                "y": 3198.8883098836204
+            }
+        },
         "FlyMap.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "FlyMap1.tmx": {
-            "scale": 1.5,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 2109.6666666666665,
-                "y": 271
+                "x": 537,
+                "y": 717
             }
+        },
+        "FlyMap2.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 2014,
+                "y": 5446
+            }
+        },
+        "newtiles.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
+    "last.imagePath": "C:/Users/nreis/Desktop/School/Metro State/ICS 499 Capstone/TileTests",
+    "map.fixedSize": true,
+    "map.height": 200,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 200,
     "openFiles": [
         "FlyMap.tsx",
-        "FlyMap1.tmx"
+        "FlyMap1.tmx",
+        "newtiles.tsx"
     ],
     "project": "TileMaps.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
         "FlyMap.tsx",
-        "FlyMap1.tmx"
-    ]
+        "newtiles.tsx",
+        "FlyMap1.tmx",
+        "C:/Users/nreis/Desktop/School/Metro State/ICS 499 Capstone/TileTests/FlyMap1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
 }

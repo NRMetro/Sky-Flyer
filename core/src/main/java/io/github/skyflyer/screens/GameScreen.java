@@ -18,6 +18,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.github.skyflyer.character.Player;
 import io.github.skyflyer.character.enemyGeneric.Enemy;
 import io.github.skyflyer.character.enemyGeneric.EnemyManager;
@@ -43,16 +44,17 @@ public class GameScreen extends SkyScreen {
     WeaponManager weaponManager;
     WeaponSpawner weaponSpawner;
     Stage stage;
+    Boolean endless = true;
 
     ArrayList<Enemy> enemies = new ArrayList<>();
 
+    int fileNumber;
+    int totalMaps = 3;
+
     public GameScreen(Game game) {
         super(game);
-    }
-
-    public GameScreen(Game game,String filename) {
-        super(game);
-        setMap(filename);
+        fileNumber = 1;
+        setMap();
     }
 
     @Override
@@ -147,8 +149,34 @@ public class GameScreen extends SkyScreen {
         batch.dispose();
     }
 
-    public void setMap(String fileName){
-        map = new TmxMapLoader().load(fileName);
+    public void setMap(){
+        String filename = "maps/FlyMap" + fileNumber + ".tmx";
+        map = new TmxMapLoader().load(filename);
+        show();
+    }
+
+    public void isFinish(float x, float y) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("finish");
+        int tileX = (int) (x);
+        int tileY = (int) (y);
+
+        TiledMapTileLayer.Cell cell = layer.getCell(tileX, tileY);
+
+        if(cell != null && cell.getTile() != null) {
+            if (cell.getTile().getProperties() != null) {
+                MapProperties properties = cell.getTile().getProperties();
+                //System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
+                if(properties.containsKey("finish") && properties.get("finish", Boolean.class)){
+                    fileNumber++;
+                    if(fileNumber == totalMaps && endless == true) {
+                        fileNumber = 1;
+                    }
+                    setMap();
+                }
+
+            }
+        }
+
     }
 
     public boolean isTileSolid(float x, float y) {

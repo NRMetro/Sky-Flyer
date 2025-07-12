@@ -24,7 +24,7 @@ public class Player extends GameActor {
     }
 
     public void update(float delta) {
-        float speed = 8f;
+        float speed = 30f;
         float dx = 0;
         float dy = 0;
         float dash = 0;
@@ -40,11 +40,16 @@ public class Player extends GameActor {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) dy -= speed * delta + dash;
         if (Gdx.input.isKeyPressed(Input.Keys.A)) dx -= speed * delta + dash;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) dx += speed * delta + dash;
+        if (Gdx.input.isKeyPressed(Input.Keys.F)) finish();
 
         if(dx != 0 || dy != 0) {
             move(dx,dy);
         }
 
+    }
+
+    private void finish() {
+        screen.isFinish(position.x,position.y);
     }
 
     private void move(float dx, float dy) {

@@ -44,7 +44,6 @@ public class MainMenuScreen extends SkyScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameScreen gameScreen = new GameScreen(game);
-                gameScreen.setMap("maps/FlyMap1.tmx");//Use this later for loading different maps in the game
                 game.setScreen(gameScreen);
             }
         });
