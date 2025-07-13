@@ -14,6 +14,7 @@ import java.util.List;
 public class EnemySpawner {
 
     private final List<EnemyManager<? extends Enemy>> enemyManagers;
+    private int playerDamage = 0;
 
     public EnemySpawner(EnemyManager<? extends Enemy> enemyManager) {
         this.enemyManagers = new ArrayList<>();
@@ -77,6 +78,8 @@ public class EnemySpawner {
     public void update(Float delta) {
         for(EnemyManager<? extends Enemy> manager: enemyManagers){
             manager.update(delta);
+            playerDamage += manager.getPlayerDamage();
+            manager.setPlayerDamage(0);
         }
     }
 
@@ -84,5 +87,13 @@ public class EnemySpawner {
         for(EnemyManager<? extends Enemy> manager: enemyManagers){
             manager.checkDistances(position);
         }
+    }
+
+    public int getPlayerDamage() {
+        return playerDamage;
+    }
+
+    public void setPlayerDamage(int playerDamage) {
+        this.playerDamage = playerDamage;
     }
 }

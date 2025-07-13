@@ -8,22 +8,21 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import io.github.skyflyer.character.Player;
 import io.github.skyflyer.character.enemyGeneric.Enemy;
 import io.github.skyflyer.character.enemyGeneric.EnemyManager;
 import io.github.skyflyer.character.enemyGeneric.EnemySpawner;
 import io.github.skyflyer.character.enemyType.Grounder;
-import io.github.skyflyer.character.enemyType.PewPew;
+import io.github.skyflyer.character.enemyType.BoomBoom;
 
 import io.github.skyflyer.weapons.WeaponManager;
 import io.github.skyflyer.weapons.WeaponSpawner;
@@ -34,25 +33,28 @@ import java.util.List;
 
 public class GameScreen extends SkyScreen {
 
-    TiledMap map;
-    OrthogonalTiledMapRenderer renderer;
-    OrthographicCamera camera;
-    Player player;
-    SpriteBatch batch;
-    EnemySpawner enemySpawner;
-    WeaponManager weaponManager;
-    WeaponSpawner weaponSpawner;
-    Stage stage;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
+    private OrthographicCamera camera;
+    private Player player;
+    private SpriteBatch batch;
+    private EnemySpawner enemySpawner;
+    private WeaponManager weaponManager;
+    private WeaponSpawner weaponSpawner;
+    private Stage stage;
+    private Boolean endless = true;
+    private Table table;
+    private ArrayList<Image> hearts = new ArrayList<>();
 
-    ArrayList<Enemy> enemies = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
+
+    private int fileNumber;
+    private int totalMaps = 3;
 
     public GameScreen(Game game) {
         super(game);
-    }
-
-    public GameScreen(Game game,String filename) {
-        super(game);
-        setMap(filename);
+        fileNumber = 1;
+        setMap();
     }
 
     @Override
@@ -62,15 +64,30 @@ public class GameScreen extends SkyScreen {
             map = new TmxMapLoader().load("maps/FlyMap1.tmx");
         }
 
+        if(player == null) {
+            player = new Player(1, 195,this); // start at some world coordinate
+        }
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.setDebug(true);
+        table.top().left();
+
+        Texture heartTexture = new Texture(Gdx.files.internal("heart.png"));
+        for(int i = 0; i < player.getHealth(); i++) {
+            hearts.add( new Image(heartTexture));
+            table.add(hearts.get(i)).pad(5);
+        }
+        table.row();
 
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
-        if(player == null) {
-            player = new Player(1, 195,this); // start at some world coordinate
-        }
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
@@ -81,7 +98,7 @@ public class GameScreen extends SkyScreen {
 
         List<EnemyManager<? extends Enemy>> managers = new ArrayList<>();
         managers.add(new EnemyManager<>(Grounder::new));
-        managers.add(new EnemyManager<>(PewPew::new));
+        managers.add(new EnemyManager<>(BoomBoom::new));
 
         enemySpawner = new EnemySpawner(managers);
         enemySpawner.placeEnemies(map, 1, 30);
@@ -122,6 +139,11 @@ public class GameScreen extends SkyScreen {
         enemySpawner.update(delta);
         enemySpawner.render(batch);
 
+        if(enemySpawner.getPlayerDamage() > 0){
+            playerHit(enemySpawner.getPlayerDamage());
+            enemySpawner.setPlayerDamage(0);
+        }
+
         weaponManager.update(delta);
         weaponManager.render(batch);
 
@@ -140,6 +162,23 @@ public class GameScreen extends SkyScreen {
         }
     }
 
+    private void playerHit(int playerDamage) {
+//        System.out.println("playerHit with damage: " + playerDamage);
+        int i = 0;
+        int health = player.getHealth();
+//        System.out.println("health: " + health);
+        while(i < playerDamage && health > 0){
+            table.removeActor(hearts.get(health - 1));
+            player.removeHealth(1);
+            health--;
+            i++;
+        }
+        if(health == 0){
+            System.out.println("Game Over");
+            game.setScreen(new MainMenuScreen(game));
+        }
+    }
+
     @Override
     public void dispose() {
         Gdx.app.debug("SkyFly", "dispose game screen");
@@ -149,8 +188,34 @@ public class GameScreen extends SkyScreen {
         batch.dispose();
     }
 
-    public void setMap(String fileName){
-        map = new TmxMapLoader().load(fileName);
+    public void setMap(){
+        String filename = "maps/FlyMap" + fileNumber + ".tmx";
+        map = new TmxMapLoader().load(filename);
+        show();
+    }
+
+    public void isFinish(float x, float y) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("finish");
+        int tileX = (int) (x);
+        int tileY = (int) (y);
+
+        TiledMapTileLayer.Cell cell = layer.getCell(tileX, tileY);
+
+        if(cell != null && cell.getTile() != null) {
+            if (cell.getTile().getProperties() != null) {
+                MapProperties properties = cell.getTile().getProperties();
+                //System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
+                if(properties.containsKey("finish") && properties.get("finish", Boolean.class)){
+                    fileNumber++;
+                    if(fileNumber == totalMaps && endless == true) {
+                        fileNumber = 1;
+                    }
+                    setMap();
+                }
+
+            }
+        }
+
     }
 
     public boolean isTileSolid(float x, float y) {
