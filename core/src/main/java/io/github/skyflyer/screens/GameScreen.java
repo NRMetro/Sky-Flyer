@@ -24,10 +24,12 @@ import io.github.skyflyer.character.enemyGeneric.EnemySpawner;
 import io.github.skyflyer.character.enemyType.Grounder;
 import io.github.skyflyer.character.enemyType.BoomBoom;
 
+import io.github.skyflyer.weapons.Weapon;
 import io.github.skyflyer.weapons.WeaponManager;
 import io.github.skyflyer.weapons.WeaponSpawner;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -119,6 +121,7 @@ public class GameScreen extends SkyScreen {
     public void render(float delta) {
         //System.out.println("Player: " + player.position + " | Camera: " + camera.position);
         player.update(delta);
+        checkWeaponPickup();
 
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1); // dark gray background
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -217,6 +220,24 @@ public class GameScreen extends SkyScreen {
         }
 
     }
+
+    private void checkWeaponPickup() {
+        Vector2 playerTilePos = player.getTilePosition();
+
+        Iterator<Weapon> iterator = weaponManager.getWeapons().iterator();
+
+        while (iterator.hasNext()) {
+            Weapon weapon = iterator.next();
+            Vector2 weaponTilePos = new Vector2(Math.round(weapon.getPosition().x), Math.round(weapon.getPosition().y));
+
+            if (playerTilePos.dst(weaponTilePos) <= 1.0f) {
+                player.pickUpWeapon(weapon);
+                weaponManager.removeWeapon(weapon);
+                break;
+            }
+        }
+    }
+
 
     public boolean isTileSolid(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("collision");

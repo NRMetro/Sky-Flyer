@@ -62,6 +62,10 @@ public class WeaponManager {
         return weapons;
     }
 
+    public void removeWeapon(Weapon weapon){
+        weapons.remove(weapon);
+    }
+
     // Dispose method to dispose of textures
     public void dispose() {
         knucklesTexture.dispose();
