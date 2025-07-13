@@ -64,7 +64,9 @@ public class GameScreen extends SkyScreen {
             map = new TmxMapLoader().load("maps/FlyMap1.tmx");
         }
 
-        player = new Player(1, 195,this); // start at some world coordinate
+        if(player == null) {
+            player = new Player(1, 195,this); // start at some world coordinate
+        }
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -85,7 +87,6 @@ public class GameScreen extends SkyScreen {
 
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
-
 
         batch = new SpriteBatch();
 
