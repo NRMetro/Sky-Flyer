@@ -13,6 +13,7 @@ public class Player extends GameActor {
     private final float dashCooldown;
     private float timeSeconds;
     private Weapon currentWeapon;
+    private int health;
 
     public Player(float x, float y, GameScreen screen) {
         setPosition(new Vector2(x, y));
@@ -21,10 +22,11 @@ public class Player extends GameActor {
         dashCooldown = 3;
         timeSeconds = 3;
         this.currentWeapon = null;
+        health = 5;
     }
 
     public void update(float delta) {
-        float speed = 8f;
+        float speed = 30f;
         float dx = 0;
         float dy = 0;
         float dash = 0;
@@ -40,11 +42,16 @@ public class Player extends GameActor {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) dy -= speed * delta + dash;
         if (Gdx.input.isKeyPressed(Input.Keys.A)) dx -= speed * delta + dash;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) dx += speed * delta + dash;
+        if (Gdx.input.isKeyPressed(Input.Keys.F)) finish();
 
         if(dx != 0 || dy != 0) {
             move(dx,dy);
         }
 
+    }
+
+    private void finish() {
+        screen.isFinish(position.x,position.y);
     }
 
     private void move(float dx, float dy) {
@@ -72,4 +79,15 @@ public class Player extends GameActor {
         currentWeapon = newWeapon;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void removeHealth(int health) {
+        this.health -= health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

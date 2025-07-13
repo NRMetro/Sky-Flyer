@@ -1,5 +1,6 @@
 package io.github.skyflyer.character.enemyType;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ import java.util.List;
 public class Grounder extends GroundEnemy{
     private float fireCooldown = .5f;
     private float timeSinceLastShot = 0f;
+    private boolean moveRight = true;
 
     private final List<Projectile> projectiles;
 
@@ -34,13 +36,39 @@ public class Grounder extends GroundEnemy{
         timeSinceLastShot += delta;
         List<Projectile> toRemove = new ArrayList<>();
 
+        float speed = 2f;
+        timeSeconds += delta;
+
+        if(timeSeconds > .5){
+            timeSeconds = 0;
+            if(moveRight){
+                moveRight = false;
+            }
+            else{
+                moveRight = true;
+            }
+        }
+
+
+        if(moveRight){
+            position.x += speed * delta;
+        }
+        else{
+            position.x -= speed * delta;
+        }
+
+
         if (timeSinceLastShot > fireCooldown) {
             fireProjectile(getPlayerLocation());
             timeSinceLastShot = 0;
         }
 
         for (Projectile p : projectiles) {
-            if(p.isToRemove()){
+            if(p.isPlayerhit()){
+                playerDamage += 1;
+                toRemove.add(p);
+            }
+            else if(p.isToRemove()){
                 toRemove.add(p);
             }
             else{
