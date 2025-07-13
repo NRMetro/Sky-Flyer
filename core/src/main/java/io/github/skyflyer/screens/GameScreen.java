@@ -15,6 +15,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import io.github.skyflyer.character.Player;
 import io.github.skyflyer.character.enemyGeneric.Enemy;
 import io.github.skyflyer.character.enemyGeneric.EnemyManager;
@@ -31,21 +33,23 @@ import java.util.List;
 
 public class GameScreen extends SkyScreen {
 
-    TiledMap map;
-    OrthogonalTiledMapRenderer renderer;
-    OrthographicCamera camera;
-    Player player;
-    SpriteBatch batch;
-    EnemySpawner enemySpawner;
-    WeaponManager weaponManager;
-    WeaponSpawner weaponSpawner;
-    Stage stage;
-    Boolean endless = true;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
+    private OrthographicCamera camera;
+    private Player player;
+    private SpriteBatch batch;
+    private EnemySpawner enemySpawner;
+    private WeaponManager weaponManager;
+    private WeaponSpawner weaponSpawner;
+    private Stage stage;
+    private Boolean endless = true;
+    private Table table;
+    private ArrayList<Image> hearts = new ArrayList<>();
 
-    ArrayList<Enemy> enemies = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
 
-    int fileNumber;
-    int totalMaps = 3;
+    private int fileNumber;
+    private int totalMaps = 3;
 
     public GameScreen(Game game) {
         super(game);
@@ -60,13 +64,29 @@ public class GameScreen extends SkyScreen {
             map = new TmxMapLoader().load("maps/FlyMap1.tmx");
         }
 
+        player = new Player(1, 195,this); // start at some world coordinate
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.setDebug(true);
+        table.top().left();
+
+        Texture heartTexture = new Texture(Gdx.files.internal("heart.png"));
+        for(int i = 0; i < player.getHealth(); i++) {
+            hearts.add( new Image(heartTexture));
+            table.add(hearts.get(i)).pad(5);
+        }
+        table.row();
 
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
-        player = new Player(1, 195,this); // start at some world coordinate
+
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
@@ -142,7 +162,20 @@ public class GameScreen extends SkyScreen {
     }
 
     private void playerHit(int playerDamage) {
-        System.out.println("playerHit with damage: " + playerDamage);
+//        System.out.println("playerHit with damage: " + playerDamage);
+        int i = 0;
+        int health = player.getHealth();
+//        System.out.println("health: " + health);
+        while(i < playerDamage && health > 0){
+            table.removeActor(hearts.get(health - 1));
+            player.removeHealth(1);
+            health--;
+            i++;
+        }
+        if(health == 0){
+            System.out.println("Game Over");
+            game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     @Override

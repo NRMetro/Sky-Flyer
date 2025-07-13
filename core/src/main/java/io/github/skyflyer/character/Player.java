@@ -13,6 +13,7 @@ public class Player extends GameActor {
     private final float dashCooldown;
     private float timeSeconds;
     private Weapon currentWeapon;
+    private int health;
 
     public Player(float x, float y, GameScreen screen) {
         setPosition(new Vector2(x, y));
@@ -21,6 +22,7 @@ public class Player extends GameActor {
         dashCooldown = 3;
         timeSeconds = 3;
         this.currentWeapon = null;
+        health = 5;
     }
 
     public void update(float delta) {
@@ -77,4 +79,15 @@ public class Player extends GameActor {
         currentWeapon = newWeapon;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void removeHealth(int health) {
+        this.health -= health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

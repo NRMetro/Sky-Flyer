@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainMenuScreen extends SkyScreen {
-    Stage stage;
-    Skin skin;
+    private Stage stage;
+    private Skin skin;
 
     public MainMenuScreen(Game game){
         super(game);
