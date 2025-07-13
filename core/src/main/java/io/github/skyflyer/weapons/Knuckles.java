@@ -12,7 +12,7 @@ public class Knuckles extends Weapon{
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {       //yuh
         batch.draw(texture, position.x, position.y, 3.0f, 3.0f);
     }
 
