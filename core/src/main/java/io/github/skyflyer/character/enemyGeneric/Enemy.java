@@ -16,6 +16,7 @@ public class Enemy extends GameActor implements Comparable<Enemy> {
         super();
         active = false;
         playerDamage = 0;
+        timeSeconds = 0;
     }
 
     public void update(float delta) {
