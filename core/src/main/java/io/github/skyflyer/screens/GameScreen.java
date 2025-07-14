@@ -43,10 +43,8 @@ public class GameScreen extends SkyScreen {
     private WeaponSpawner weaponSpawner;
     private Stage stage;
     private Boolean endless = true;
-    private Table table;
-    private ArrayList<Image> hearts = new ArrayList<>();
-
-    private ArrayList<Enemy> enemies = new ArrayList<>();
+    private Table heartTable;
+    private final ArrayList<Image> hearts = new ArrayList<>();
 
     private int fileNumber;
     private int totalMaps = 3;
@@ -71,19 +69,19 @@ public class GameScreen extends SkyScreen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        heartTable = new Table();
+        heartTable.setFillParent(true);
+        stage.addActor(heartTable);
 
-        table.setDebug(true);
-        table.top().left();
+        heartTable.setDebug(true);
+        heartTable.top().left();
 
         Texture heartTexture = new Texture(Gdx.files.internal("heart.png"));
         for(int i = 0; i < player.getHealth(); i++) {
             hearts.add( new Image(heartTexture));
-            table.add(hearts.get(i)).pad(5);
+            heartTable.add(hearts.get(i)).pad(5);
         }
-        table.row();
+        heartTable.row();
 
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
@@ -135,7 +133,6 @@ public class GameScreen extends SkyScreen {
 
         enemySpawner.checkDistances(position);
 
-
         enemySpawner.update(delta);
         enemySpawner.render(batch);
 
@@ -148,9 +145,7 @@ public class GameScreen extends SkyScreen {
         weaponManager.render(batch);
 
         player.render(batch);
-        for(Enemy e: enemies){
-            e.render(batch);
-        }
+
         batch.end();
 
         stage.act(delta);
@@ -168,7 +163,7 @@ public class GameScreen extends SkyScreen {
         int health = player.getHealth();
 //        System.out.println("health: " + health);
         while(i < playerDamage && health > 0){
-            table.removeActor(hearts.get(health - 1));
+            heartTable.removeActor(hearts.get(health - 1));
             player.removeHealth(1);
             health--;
             i++;
@@ -207,7 +202,7 @@ public class GameScreen extends SkyScreen {
                 //System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
                 if(properties.containsKey("finish") && properties.get("finish", Boolean.class)){
                     fileNumber++;
-                    if(fileNumber == totalMaps && endless == true) {
+                    if(fileNumber == totalMaps && endless) {
                         fileNumber = 1;
                     }
                     setMap();
