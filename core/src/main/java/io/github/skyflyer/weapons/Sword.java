@@ -24,6 +24,7 @@ public class Sword extends Weapon{
 
     @Override
     public void activate(Player player) {
+        //System.out.println("Swords being activated!");
         Vector2 playerPos = player.getTilePosition();
         Vector2 attackPos = new Vector2(playerPos);
 
@@ -33,14 +34,14 @@ public class Sword extends Weapon{
             attackPos.x -= 1;
         }
 
-        System.out.println("Attack Position: " + attackPos);  // Debugging
+        //System.out.println("Attack Position: " + attackPos);
         for (Enemy enemy : player.getScreen().getEnemies()) {
-            System.out.println("Enemy Position: " + enemy.getPosition());  // Debugging
+            //System.out.println("Enemy Position: " + enemy.getPosition());
             if (enemy.getPosition().dst(attackPos) < 2.0f) {
                 enemy.takeDamage(damage);
             }
         }
 
-        System.out.println("Sword attack on " + attackPos);
+        //System.out.println("Sword attack on " + attackPos);
     }
 }

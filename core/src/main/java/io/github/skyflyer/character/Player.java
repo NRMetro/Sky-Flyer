@@ -20,21 +20,24 @@ public class Player extends GameActor {
     private int health;
     private boolean holdingWeapon = false;
 
-    private Animation<TextureRegion> flyingLeftWithSword;
-    private Animation<TextureRegion> flyingRightWithSword;
-    private Animation<TextureRegion> flyingRightAnimation;
-    private Animation<TextureRegion> flyingLeftAnimation;
-    private Animation<TextureRegion> flyingLeftWithKnuckles;
-    private Animation<TextureRegion> flyingRightWithKnuckles;
-    private Animation<TextureRegion> flyingRightWithSlingshot;
-    private Animation<TextureRegion> flyingLeftWithSlingshot;
-    private Animation<TextureRegion> attackRightWithSword;
-    private Animation<TextureRegion> attackLeftWithSword;
+    private final Animation<TextureRegion> flyingLeftWithSword;
+    private final Animation<TextureRegion> flyingRightWithSword;
+    private final Animation<TextureRegion> flyingRightAnimation;
+    private final Animation<TextureRegion> flyingLeftAnimation;
+    private final Animation<TextureRegion> flyingLeftWithKnuckles;
+    private final Animation<TextureRegion> flyingRightWithKnuckles;
+    private final Animation<TextureRegion> flyingRightWithSlingshot;
+    private final Animation<TextureRegion> flyingLeftWithSlingshot;
+    private final Animation<TextureRegion> attackRightWithSword;
+    private final Animation<TextureRegion> attackLeftWithSword;
+    private final Animation<TextureRegion> attackRightWithKnuckles;
+    private final Animation<TextureRegion> attackLeftWithKnuckles;
 
     private float flyingTime = 0;
     private boolean facingRight = true;
     private boolean isAttacking = false;
     private float attackTime = 0f;
+    private boolean canAttack = true;
 
     public Player(float x, float y, GameScreen screen) {
         setPosition(new Vector2(x, y));
@@ -115,7 +118,7 @@ public class Player extends GameActor {
             Texture frame = new Texture(Gdx.files.internal("Weapons/rightSwordAttack/attackMovingRight_" + i + ".png"));
             rightSwordAttackFrames.add(new TextureRegion(frame));
         }
-        attackRightWithSword = new Animation<>(0.1f, rightSwordAttackFrames, Animation.PlayMode.LOOP);
+        attackRightWithSword = new Animation<>(0.1f, rightSwordAttackFrames, Animation.PlayMode.NORMAL);
 
         //Load left facing sword attack animations
         Array<TextureRegion> leftSwordAttackFrames = new Array<>();
@@ -123,7 +126,24 @@ public class Player extends GameActor {
             Texture frame = new Texture(Gdx.files.internal("Weapons/leftSwordAttack/attackMovingLeft_" + i + ".png"));
             leftSwordAttackFrames.add(new TextureRegion(frame));
         }
-        attackLeftWithSword = new Animation<>(0.1f, leftSwordAttackFrames, Animation.PlayMode.LOOP);
+        attackLeftWithSword = new Animation<>(0.1f, leftSwordAttackFrames, Animation.PlayMode.NORMAL);
+
+        //Load right facing knuckles attack animation
+        Array<TextureRegion> rightKnucklesAttackFrames = new Array<>();
+        for (int i = 0; i < 3; i++){
+            Texture frame = new Texture(Gdx.files.internal("Weapons/rightKnucklesAttack/attackMovingRight_" + i + ".png"));
+            rightKnucklesAttackFrames.add(new TextureRegion(frame));
+        }
+        attackRightWithKnuckles = new Animation<>(0.1f, rightKnucklesAttackFrames, Animation.PlayMode.NORMAL);
+
+        //Load left facing knuckles attack animation
+        //Load right facing knuckles attack animation
+        Array<TextureRegion> leftKnucklesAttackFrames = new Array<>();
+        for (int i = 0; i < 3; i++){
+            Texture frame = new Texture(Gdx.files.internal("Weapons/leftKnucklesAttack/attackMovingLeft_" + i + ".png"));
+            leftKnucklesAttackFrames.add(new TextureRegion(frame));
+        }
+        attackLeftWithKnuckles = new Animation<>(0.1f, leftKnucklesAttackFrames, Animation.PlayMode.NORMAL);
 
     }
 
@@ -158,17 +178,23 @@ public class Player extends GameActor {
             move(dx,dy);
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isAttacking && canAttack){
+            System.out.println("Space bar pressed!");
+
             if (holdingWeapon && currentWeapon != null){
+                System.out.println("Activating Weapon!");
                 currentWeapon.activate(this);
                 isAttacking = true;
+                canAttack = false;
                 attackTime = 0f;
             }
         }
         if (isAttacking){
             attackTime += delta;
             if (attackTime >= 0.6f){
+                System.out.println("Attack finished!");
                 isAttacking = false;
+                canAttack = true;
             }
         }
     }
@@ -181,6 +207,9 @@ public class Player extends GameActor {
             switch (weaponName) {
                 case "Sword":
                     currentAnim = facingRight ? attackRightWithSword : attackLeftWithSword;
+                    break;
+                case "Knuckles":
+                    currentAnim = facingRight ? attackRightWithKnuckles : attackLeftWithKnuckles;
                     break;
                 //Later add more weapon attack animations here.
                 default:
@@ -207,7 +236,7 @@ public class Player extends GameActor {
             currentAnim = facingRight ? flyingRightAnimation : flyingLeftAnimation;
         }
 
-        TextureRegion currentFrame = currentAnim.getKeyFrame(isAttacking ? attackTime : flyingTime, true);
+        TextureRegion currentFrame = currentAnim.getKeyFrame(isAttacking ? attackTime : flyingTime, false);
         batch.draw(currentFrame, position.x, position.y, 2.0f, 2.0f);
     }
 
