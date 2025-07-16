@@ -11,12 +11,14 @@ public class Enemy extends GameActor implements Comparable<Enemy> {
     private boolean active;
     protected float timeSeconds;
     public boolean toRemove;
+    private int health = 3;
 
     public Enemy(){
         super();
         active = false;
         playerDamage = 0;
         timeSeconds = 0;
+        toRemove = false;
     }
 
     public void update(float delta) {
@@ -46,6 +48,14 @@ public class Enemy extends GameActor implements Comparable<Enemy> {
         return 0;
     }
 
+    public void takeDamage(int amount){
+        health -= amount;
+        System.out.println("Enemy took " + amount + " damage");
+        if (health <= 0){
+            toRemove = true;
+        }
+    }
+
     public float getDistToPlayer() {
         return distToPlayer;
     }
@@ -62,5 +72,4 @@ public class Enemy extends GameActor implements Comparable<Enemy> {
 
         return playerLocation;
     }
-
 }

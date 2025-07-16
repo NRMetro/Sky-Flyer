@@ -47,9 +47,7 @@ public class GameScreen extends SkyScreen {
     private Boolean endless = true;
     private Table table;
     private ArrayList<Image> hearts = new ArrayList<>();
-
     private ArrayList<Enemy> enemies = new ArrayList<>();
-
     private int fileNumber;
     private int totalMaps = 3;
 
@@ -90,6 +88,9 @@ public class GameScreen extends SkyScreen {
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
+        if(player == null) {
+            player = new Player(1, 195,this); // start at some world coordinate
+        }
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
@@ -264,5 +265,18 @@ public class GameScreen extends SkyScreen {
 
         }
         return false;
+    }
+
+    public List<Enemy> getEnemies(){
+        List<Enemy> allEnemies = new ArrayList<>();
+        for (EnemyManager<? extends Enemy> manager : enemySpawner.getEnemyManagers()) {
+            allEnemies.addAll(manager.getEnemies());
+        }
+        return allEnemies;
+    }
+
+
+    public void addEnemy(Enemy e){
+        enemies.add(e);
     }
 }

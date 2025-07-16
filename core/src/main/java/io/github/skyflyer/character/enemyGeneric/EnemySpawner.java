@@ -89,6 +89,10 @@ public class EnemySpawner {
         }
     }
 
+    public List<EnemyManager<? extends Enemy>> getEnemyManagers() {
+        return enemyManagers;
+    }
+
     public int getPlayerDamage() {
         return playerDamage;
     }

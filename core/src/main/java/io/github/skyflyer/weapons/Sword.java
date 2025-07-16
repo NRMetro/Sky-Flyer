@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import io.github.skyflyer.character.Player;
+import io.github.skyflyer.character.enemyGeneric.Enemy;
 
 public class Sword extends Weapon{
 
@@ -23,6 +24,23 @@ public class Sword extends Weapon{
 
     @Override
     public void activate(Player player) {
+        Vector2 playerPos = player.getTilePosition();
+        Vector2 attackPos = new Vector2(playerPos);
 
+        if (player.isFacingRight()) {
+            attackPos.x += 1;
+        } else {
+            attackPos.x -= 1;
+        }
+
+        System.out.println("Attack Position: " + attackPos);  // Debugging
+        for (Enemy enemy : player.getScreen().getEnemies()) {
+            System.out.println("Enemy Position: " + enemy.getPosition());  // Debugging
+            if (enemy.getPosition().dst(attackPos) < 2.0f) {
+                enemy.takeDamage(damage);
+            }
+        }
+
+        System.out.println("Sword attack on " + attackPos);
     }
 }
