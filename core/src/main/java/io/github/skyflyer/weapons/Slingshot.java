@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import io.github.skyflyer.character.Player;
 
-public class SlingShot extends Weapon {
+public class Slingshot extends Weapon {
 
-    public SlingShot(Texture texture, Vector2 position, int damage) {
+    public Slingshot(Texture texture, Vector2 position, int damage) {
         super(texture, position, damage);
     }
 

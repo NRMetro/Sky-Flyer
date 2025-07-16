@@ -39,7 +39,7 @@ public class WeaponManager {
                 break;
             case 2:
             default:
-                weapon = new SlingShot(slingshotTexture, new Vector2(worldX, worldY), 15);
+                weapon = new Slingshot(slingshotTexture, new Vector2(worldX, worldY), 15);
                 break;
         }
 
