@@ -24,6 +24,7 @@ import io.github.skyflyer.character.enemyGeneric.EnemySpawner;
 import io.github.skyflyer.character.enemyType.Grounder;
 import io.github.skyflyer.character.enemyType.BoomBoom;
 
+import io.github.skyflyer.weapons.SlingshotBullet;
 import io.github.skyflyer.weapons.Weapon;
 import io.github.skyflyer.weapons.WeaponManager;
 import io.github.skyflyer.weapons.WeaponSpawner;
@@ -50,6 +51,7 @@ public class GameScreen extends SkyScreen {
     private ArrayList<Enemy> enemies = new ArrayList<>();
     private int fileNumber;
     private int totalMaps = 3;
+    private List<SlingshotBullet> playerBullets = new ArrayList<>();
 
     public GameScreen(Game game) {
         super(game);
@@ -151,6 +153,15 @@ public class GameScreen extends SkyScreen {
         for(Enemy e: enemies){
             e.render(batch);
         }
+
+        Iterator<SlingshotBullet> iter = playerBullets.iterator();
+        while(iter.hasNext()){
+            SlingshotBullet b = iter.next();
+            b.update(delta);
+            b.render(batch);
+            if (b.isToRemove()) iter.remove();
+        }
+
         batch.end();
 
         stage.act(delta);
@@ -269,6 +280,10 @@ public class GameScreen extends SkyScreen {
             allEnemies.addAll(manager.getEnemies());
         }
         return allEnemies;
+    }
+
+    public void addBullets(SlingshotBullet bullet){
+        playerBullets.add(bullet);
     }
 
 

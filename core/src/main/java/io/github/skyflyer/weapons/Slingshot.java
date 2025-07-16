@@ -18,11 +18,13 @@ public class Slingshot extends Weapon {
 
     @Override
     public void update() {
-        // Implement any behavior specific to slingshot, e.g., projectile movement
     }
 
     @Override
     public void activate(Player player) {
-        // Implement behavior when player activates the slingshot, e.g., shooting a projectile
+        Vector2 startPos = player.getTilePosition();
+        Vector2 velocity = player.isFacingRight() ? new Vector2(10, 0) : new Vector2(-10, 0);
+        SlingshotBullet projectile = new SlingshotBullet(startPos, velocity, damage, player.getScreen());
+        player.getScreen().addBullets(projectile);
     }
 }

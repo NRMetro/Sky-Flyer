@@ -8,7 +8,7 @@ public class BoomBoom extends FlyingEnemy {
 
     public BoomBoom() {
         super();
-        setTexture(new Texture("SkyFlyer/SkyFlyer.png"));
+        setTexture(new Texture("Enemies/bomberMovingLeft/bomberLeft_0.png"));
         toRemove = false;
     }
 

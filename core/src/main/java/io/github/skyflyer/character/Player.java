@@ -32,6 +32,8 @@ public class Player extends GameActor {
     private final Animation<TextureRegion> attackLeftWithSword;
     private final Animation<TextureRegion> attackRightWithKnuckles;
     private final Animation<TextureRegion> attackLeftWithKnuckles;
+    private final Animation<TextureRegion> attackLeftWithSlingshot;
+    private final Animation<TextureRegion> attackRightWithSlingshot;
 
     private float flyingTime = 0;
     private boolean facingRight = true;
@@ -137,13 +139,28 @@ public class Player extends GameActor {
         attackRightWithKnuckles = new Animation<>(0.1f, rightKnucklesAttackFrames, Animation.PlayMode.NORMAL);
 
         //Load left facing knuckles attack animation
-        //Load right facing knuckles attack animation
         Array<TextureRegion> leftKnucklesAttackFrames = new Array<>();
         for (int i = 0; i < 3; i++){
             Texture frame = new Texture(Gdx.files.internal("Weapons/leftKnucklesAttack/attackMovingLeft_" + i + ".png"));
             leftKnucklesAttackFrames.add(new TextureRegion(frame));
         }
         attackLeftWithKnuckles = new Animation<>(0.1f, leftKnucklesAttackFrames, Animation.PlayMode.NORMAL);
+
+        //Load left facing slingshot attack animation
+        Array<TextureRegion> leftSlingshotAttackFrames = new Array<>();
+        for (int i = 0; i < 3; i++){
+            Texture frame = new Texture(Gdx.files.internal("Weapons/leftSlingshotAttack/attackMovingLeft_" + i + ".png"));
+            leftSlingshotAttackFrames.add(new TextureRegion(frame));
+        }
+        attackLeftWithSlingshot = new Animation<>(0.1f, leftSlingshotAttackFrames, Animation.PlayMode.NORMAL);
+
+        //Load right facing slingshot attack animation
+        Array<TextureRegion> rightSlingshotAttackFrames = new Array<>();
+        for (int i = 0; i < 3; i++){
+            Texture frame = new Texture(Gdx.files.internal("Weapons/rightSlingshotAttack/attackMovingRight_" + i + ".png"));
+            rightSlingshotAttackFrames.add(new TextureRegion(frame));
+        }
+        attackRightWithSlingshot = new Animation<>(0.1f, rightSlingshotAttackFrames, Animation.PlayMode.NORMAL);
 
     }
 
@@ -155,7 +172,7 @@ public class Player extends GameActor {
 
         flyingTime += delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT) && timeSeconds >= dashCooldown) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.M) && timeSeconds >= dashCooldown) {
             dash = 3;
             timeSeconds = 0;
         }
@@ -211,7 +228,9 @@ public class Player extends GameActor {
                 case "Knuckles":
                     currentAnim = facingRight ? attackRightWithKnuckles : attackLeftWithKnuckles;
                     break;
-                //Later add more weapon attack animations here.
+                case "Slingshot":
+                    currentAnim = facingRight ? attackRightWithSlingshot : attackLeftWithSlingshot;
+                    break;
                 default:
                     currentAnim = facingRight ? flyingRightAnimation : flyingLeftAnimation;
                     break;
@@ -316,6 +335,24 @@ public class Player extends GameActor {
             region.getTexture().dispose();
         }
         for (TextureRegion region : flyingRightWithSlingshot.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : attackLeftWithSword.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : attackRightWithSword.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : attackRightWithKnuckles.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : attackLeftWithKnuckles.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : attackRightWithSlingshot.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : attackLeftWithSlingshot.getKeyFrames()){
             region.getTexture().dispose();
         }
     }
