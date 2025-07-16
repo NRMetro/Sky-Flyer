@@ -30,7 +30,7 @@ public class BoomBoom extends FlyingEnemy {
 
         if(projX == playX && projY == playY){
 //            System.out.println("Player hit");
-            playerDamage = 3;
+            playerDamage = 2;
             toRemove = true;
         }
     }

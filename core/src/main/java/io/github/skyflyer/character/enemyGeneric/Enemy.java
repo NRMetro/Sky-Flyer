@@ -69,7 +69,6 @@ public class Enemy extends GameActor implements Comparable<Enemy> {
     }
 
     public Vector2 getPlayerLocation() {
-
         return playerLocation;
     }
 }
