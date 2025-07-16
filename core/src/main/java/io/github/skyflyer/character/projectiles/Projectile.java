@@ -11,7 +11,7 @@ public class Projectile extends GameActor {
     private boolean playerhit = false;
 
     public Projectile(Vector2 position, Vector2 velocity) {
-        setTexture(new Texture("Bullet.png"));
+        setTexture(new Texture("Weapons/bullet.png"));
         setPosition(position.cpy());
         this.velocity = velocity.cpy();
         distanceTraveled = 0f;

@@ -51,19 +51,19 @@ public class EnemyManager<T extends Enemy> {
         return enemies;
     }
 
-    public void checkDistances(Vector2 position) {
-        for (T enemy : enemies) {
-            float distance = enemy.calculateDistance(position);
-            enemy.setActive(distance < 20);
-        }
-    }
-
     public int getPlayerDamage() {
         return playerDamage;
     }
 
     public void setPlayerDamage(int playerDamage) {
         this.playerDamage = playerDamage;
+    }
+
+    public void checkDistances(Vector2 position) {
+        for (T enemy : enemies) {
+            float distance = enemy.calculateDistance(position);
+            enemy.setActive(distance < 20);
+        }
     }
 }
 

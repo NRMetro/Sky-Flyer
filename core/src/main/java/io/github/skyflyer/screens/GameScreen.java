@@ -45,11 +45,9 @@ public class GameScreen extends SkyScreen {
     private WeaponSpawner weaponSpawner;
     private Stage stage;
     private Boolean endless = true;
-    private Table table;
+    private Table heartTable;
     private ArrayList<Image> hearts = new ArrayList<>();
-
     private ArrayList<Enemy> enemies = new ArrayList<>();
-
     private int fileNumber;
     private int totalMaps = 3;
 
@@ -73,19 +71,19 @@ public class GameScreen extends SkyScreen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        heartTable = new Table();
+        heartTable.setFillParent(true);
+        stage.addActor(heartTable);
 
-        table.setDebug(true);
-        table.top().left();
+        heartTable.setDebug(true);
+        heartTable.top().left();
 
         Texture heartTexture = new Texture(Gdx.files.internal("heart.png"));
         for(int i = 0; i < player.getHealth(); i++) {
             hearts.add( new Image(heartTexture));
-            table.add(hearts.get(i)).pad(5);
+            heartTable.add(hearts.get(i)).pad(5);
         }
-        table.row();
+        heartTable.row();
 
         float unitScale = 1 / 32f;
         renderer = new OrthogonalTiledMapRenderer(map, unitScale);
@@ -138,7 +136,6 @@ public class GameScreen extends SkyScreen {
 
         enemySpawner.checkDistances(position);
 
-
         enemySpawner.update(delta);
         enemySpawner.render(batch);
 
@@ -171,7 +168,7 @@ public class GameScreen extends SkyScreen {
         int health = player.getHealth();
 //        System.out.println("health: " + health);
         while(i < playerDamage && health > 0){
-            table.removeActor(hearts.get(health - 1));
+            heartTable.removeActor(hearts.get(health - 1));
             player.removeHealth(1);
             health--;
             i++;
@@ -264,5 +261,18 @@ public class GameScreen extends SkyScreen {
 
         }
         return false;
+    }
+
+    public List<Enemy> getEnemies(){
+        List<Enemy> allEnemies = new ArrayList<>();
+        for (EnemyManager<? extends Enemy> manager : enemySpawner.getEnemyManagers()) {
+            allEnemies.addAll(manager.getEnemies());
+        }
+        return allEnemies;
+    }
+
+
+    public void addEnemy(Enemy e){
+        enemies.add(e);
     }
 }

@@ -18,11 +18,23 @@ public class Player extends GameActor {
     private float timeSeconds;
     private Weapon currentWeapon;
     private int health;
+    private boolean holdingWeapon = false;
 
+    private Animation<TextureRegion> flyingLeftWithSword;
+    private Animation<TextureRegion> flyingRightWithSword;
     private Animation<TextureRegion> flyingRightAnimation;
     private Animation<TextureRegion> flyingLeftAnimation;
+    private Animation<TextureRegion> flyingLeftWithKnuckles;
+    private Animation<TextureRegion> flyingRightWithKnuckles;
+    private Animation<TextureRegion> flyingRightWithSlingshot;
+    private Animation<TextureRegion> flyingLeftWithSlingshot;
+    private Animation<TextureRegion> attackRightWithSword;
+    private Animation<TextureRegion> attackLeftWithSword;
+
     private float flyingTime = 0;
     private boolean facingRight = true;
+    private boolean isAttacking = false;
+    private float attackTime = 0f;
 
     public Player(float x, float y, GameScreen screen) {
         setPosition(new Vector2(x, y));
@@ -48,6 +60,71 @@ public class Player extends GameActor {
             leftFrames.add(new TextureRegion(frame));
         }
         flyingLeftAnimation = new Animation<>(0.3f, leftFrames, Animation.PlayMode.LOOP);
+
+        //Load right sword facing animation frames
+        Array<TextureRegion> rightSwordFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("SkyFlyer/FlyerMovingRightWithSword/swordMovingRight_" + i + ".png"));
+            rightSwordFrames.add(new TextureRegion(frame));
+        }
+        flyingRightWithSword = new Animation<>(0.3f, rightSwordFrames, Animation.PlayMode.LOOP);
+
+        //Load left sword facing animation frames
+        Array<TextureRegion> leftSwordFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("SkyFlyer/FlyerMovingLeftWithSword/swordMovingLeft_" + i + ".png"));
+            leftSwordFrames.add(new TextureRegion(frame));
+        }
+        flyingLeftWithSword = new Animation<>(0.3f, leftSwordFrames, Animation.PlayMode.LOOP);
+
+        //Load left right knuckles facing animation frames
+        Array<TextureRegion> rightKnucklesFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("SkyFlyer/FlyerMovingRightWithKnuckles/knucklesMovingRight_" + i + ".png"));
+            rightKnucklesFrames.add(new TextureRegion(frame));
+        }
+        flyingRightWithKnuckles = new Animation<>(0.3f, rightKnucklesFrames, Animation.PlayMode.LOOP);
+
+        //Load left knuckles facing animation frames
+        Array<TextureRegion> leftKnucklesFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("SkyFlyer/FlyerMovingLeftWithKnuckles/knucklesMovingLeft_" + i + ".png"));
+            leftKnucklesFrames.add(new TextureRegion(frame));
+        }
+        flyingLeftWithKnuckles = new Animation<>(0.3f, leftKnucklesFrames, Animation.PlayMode.LOOP);
+
+        //Load Left slingshot facing animation frames
+        Array<TextureRegion> leftSlingshotFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("SkyFlyer/FlyerMovingLeftWithSlingshot/slingshotMovingLeft_" + i + ".png"));
+            leftSlingshotFrames.add(new TextureRegion(frame));
+        }
+        flyingLeftWithSlingshot = new Animation<>(0.3f, leftSlingshotFrames, Animation.PlayMode.LOOP);
+
+        //Load right slingshot facing animation frames
+        Array<TextureRegion> rightSlingshotFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("SkyFlyer/FlyerMovingRightWithSlingshot/slingshotMovingRight_" + i + ".png"));
+            rightSlingshotFrames.add(new TextureRegion(frame));
+        }
+        flyingRightWithSlingshot = new Animation<>(0.3f, rightSlingshotFrames, Animation.PlayMode.LOOP);
+
+        //Load right facing sword attack animations
+        Array<TextureRegion> rightSwordAttackFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("Weapons/rightSwordAttack/attackMovingRight_" + i + ".png"));
+            rightSwordAttackFrames.add(new TextureRegion(frame));
+        }
+        attackRightWithSword = new Animation<>(0.1f, rightSwordAttackFrames, Animation.PlayMode.LOOP);
+
+        //Load left facing sword attack animations
+        Array<TextureRegion> leftSwordAttackFrames = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            Texture frame = new Texture(Gdx.files.internal("Weapons/leftSwordAttack/attackMovingLeft_" + i + ".png"));
+            leftSwordAttackFrames.add(new TextureRegion(frame));
+        }
+        attackLeftWithSword = new Animation<>(0.1f, leftSwordAttackFrames, Animation.PlayMode.LOOP);
+
     }
 
     public void update(float delta) {
@@ -80,19 +157,67 @@ public class Player extends GameActor {
         if(dx != 0 || dy != 0) {
             move(dx,dy);
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+            if (holdingWeapon && currentWeapon != null){
+                currentWeapon.activate(this);
+                isAttacking = true;
+                attackTime = 0f;
+            }
+        }
+        if (isAttacking){
+            attackTime += delta;
+            if (attackTime >= 0.6f){
+                isAttacking = false;
+            }
+        }
     }
 
-    public void render(SpriteBatch batch){
-        Animation<TextureRegion> currentAnim = facingRight ? flyingRightAnimation : flyingLeftAnimation;
-        TextureRegion currentFrame = currentAnim.getKeyFrame(flyingTime, true);
+    public void render(SpriteBatch batch) {
+        Animation<TextureRegion> currentAnim;
+
+        if (isAttacking && holdingWeapon && currentWeapon != null) {
+            String weaponName = currentWeapon.getClass().getSimpleName();
+            switch (weaponName) {
+                case "Sword":
+                    currentAnim = facingRight ? attackRightWithSword : attackLeftWithSword;
+                    break;
+                //Later add more weapon attack animations here.
+                default:
+                    currentAnim = facingRight ? flyingRightAnimation : flyingLeftAnimation;
+                    break;
+            }
+        } else if (holdingWeapon && currentWeapon != null) {
+            String weaponName = currentWeapon.getClass().getSimpleName();
+            switch (weaponName) {
+                case "Sword":
+                    currentAnim = facingRight ? flyingRightWithSword : flyingLeftWithSword;
+                    break;
+                case "Knuckles":
+                    currentAnim = facingRight ? flyingRightWithKnuckles : flyingLeftWithKnuckles;
+                    break;
+                case "Slingshot":
+                    currentAnim = facingRight ? flyingRightWithSlingshot : flyingLeftWithSlingshot;
+                    break;
+                default:
+                    currentAnim = facingRight ? flyingRightAnimation : flyingLeftAnimation;
+                    break;
+            }
+        } else {
+            currentAnim = facingRight ? flyingRightAnimation : flyingLeftAnimation;
+        }
+
+        TextureRegion currentFrame = currentAnim.getKeyFrame(isAttacking ? attackTime : flyingTime, true);
         batch.draw(currentFrame, position.x, position.y, 2.0f, 2.0f);
     }
 
+
     private void finish() {
-        screen.isFinish(position.x,position.y);
+        screen.isFinish(position.x, position.y);
     }
 
     private void move(float dx, float dy) {
+//        System.out.println("MOVING BY " + dx + " " + dy);
         float x = (int) position.x + 3 * dx;
         float y = (int) position.y + 2 * dy;
 
@@ -101,7 +226,12 @@ public class Player extends GameActor {
         if(!solid){
             position.x += dx;
             position.y += dy;
+//            System.out.println("MOVING TO " + position.x + " " + position.y);
         }
+    }
+
+    public boolean isFacingRight(){
+        return facingRight;
     }
 
     public Weapon getCurrentWeapon(){
@@ -110,6 +240,7 @@ public class Player extends GameActor {
 
     public void pickUpWeapon(Weapon newWeapon){
         this.currentWeapon = newWeapon;
+        this.holdingWeapon = true;
         System.out.println("Picked up " + newWeapon.getClass().getSimpleName());
     }
 
@@ -119,6 +250,10 @@ public class Player extends GameActor {
 
     public void removeHealth(int health) {
         this.health -= health;
+    }
+
+    public GameScreen getScreen(){
+        return screen;
     }
 
     public void setHealth(int health) {
@@ -134,6 +269,24 @@ public class Player extends GameActor {
             region.getTexture().dispose();
         }
         for (TextureRegion region : flyingLeftAnimation.getKeyFrames()) {
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : flyingLeftWithSword.getKeyFrames()) {
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : flyingRightWithSword.getKeyFrames()) {
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : flyingLeftWithKnuckles.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : flyingRightWithKnuckles.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : flyingLeftWithSlingshot.getKeyFrames()){
+            region.getTexture().dispose();
+        }
+        for (TextureRegion region : flyingRightWithSlingshot.getKeyFrames()){
             region.getTexture().dispose();
         }
     }
