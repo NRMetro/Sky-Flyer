@@ -11,12 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import io.github.skyflyer.SkyFly;
 
 public class MainMenuScreen extends SkyScreen {
     private Stage stage;
     private Skin skin;
 
-    public MainMenuScreen(Game game){
+    public MainMenuScreen(SkyFly game){
         super(game);
     }
 
@@ -27,7 +28,7 @@ public class MainMenuScreen extends SkyScreen {
 
         skin = new Skin(Gdx.files.internal("skin/glassy/skin/glassy-ui.json"));
 
-        Texture bgTexture = new Texture(Gdx.files.internal("tempbackground.png"));
+        Texture bgTexture = new Texture(Gdx.files.internal("mainBackground.png"));
         Drawable background = new TextureRegionDrawable(new TextureRegion(bgTexture));
 
         Table table = new Table();
@@ -36,7 +37,11 @@ public class MainMenuScreen extends SkyScreen {
         stage.addActor(table);
 
         Label gameName = new Label("SKY FLYER", skin, "big");
-        table.add(gameName).padBottom(120);
+        table.add(gameName).padBottom(20);
+        table.row();
+
+        Label money = new Label("Money in Bank: " + game.getMoney(), skin);
+        table.add(money).padBottom(100);
         table.row();
 
         TextButton newGameButton = new TextButton("New Game", skin);
