@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import io.github.skyflyer.SkyFly;
 import io.github.skyflyer.character.Player;
 import io.github.skyflyer.character.enemyGeneric.Enemy;
 import io.github.skyflyer.character.enemyGeneric.EnemyManager;
@@ -45,7 +46,7 @@ public class GameScreen extends SkyScreen {
     private WeaponManager weaponManager;
     private WeaponSpawner weaponSpawner;
     private Stage stage;
-    private Boolean endless = true;
+    private Boolean endless = false;
     private Table heartTable;
     private ArrayList<Image> hearts = new ArrayList<>();
     private ArrayList<Enemy> enemies = new ArrayList<>();
@@ -53,7 +54,7 @@ public class GameScreen extends SkyScreen {
     private int totalMaps = 3;
     private List<SlingshotBullet> playerBullets = new ArrayList<>();
 
-    public GameScreen(Game game) {
+    public GameScreen(SkyFly game) {
         super(game);
         fileNumber = 1;
         setMap();
@@ -68,6 +69,9 @@ public class GameScreen extends SkyScreen {
 
         if(player == null) {
             player = new Player(1, 195,this); // start at some world coordinate
+        }
+        else{
+            player.setCoords(1,195);
         }
 
         stage = new Stage();
@@ -186,7 +190,7 @@ public class GameScreen extends SkyScreen {
         }
         if(health == 0){
             System.out.println("Game Over");
-            game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new DeathScreen(game));
         }
     }
 
@@ -217,11 +221,21 @@ public class GameScreen extends SkyScreen {
                 MapProperties properties = cell.getTile().getProperties();
                 //System.out.println(properties.containsKey("solid") + " " + properties.get("solid", Boolean.class));
                 if(properties.containsKey("finish") && properties.get("finish", Boolean.class)){
-                    fileNumber++;
+                    //System.out.println("FINISSHHHH" + fileNumber + " " + totalMaps);
                     if(fileNumber == totalMaps && endless == true) {
                         fileNumber = 1;
+                        setMap();
                     }
-                    setMap();
+                    else if(fileNumber == totalMaps){
+                        game.setScreen(new WinScreen(game));
+                    }
+                    else{
+                        fileNumber++;
+                        setMap();
+                    }
+
+
+
                 }
 
             }

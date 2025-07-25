@@ -2,11 +2,12 @@ package io.github.skyflyer.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import io.github.skyflyer.SkyFly;
 
 public abstract class SkyScreen implements Screen {
-    Game game;
+    SkyFly game;
 
-    public SkyScreen(Game game){
+    public SkyScreen(SkyFly game){
         this.game = game;
     }
 
