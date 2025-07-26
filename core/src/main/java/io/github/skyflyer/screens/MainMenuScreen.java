@@ -1,6 +1,5 @@
 package io.github.skyflyer.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,7 +39,7 @@ public class MainMenuScreen extends SkyScreen {
         table.add(gameName).padBottom(20);
         table.row();
 
-        Label money = new Label("Money in Bank: " + game.getMoney(), skin);
+        Label money = new Label("Money in Bank: " + game.getTrophies(), skin);
         table.add(money).padBottom(100);
         table.row();
 
