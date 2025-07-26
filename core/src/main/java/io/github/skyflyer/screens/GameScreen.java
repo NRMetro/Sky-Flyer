@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.ObjectMap;
 import io.github.skyflyer.SkyFly;
 import io.github.skyflyer.character.Player;
 import io.github.skyflyer.character.enemyGeneric.Enemy;
@@ -62,6 +63,19 @@ public class GameScreen extends SkyScreen {
 
     @Override
     public void show() {
+        ObjectMap<String, String> settings = game.getSettings();
+        ObjectMap<String, Integer> unlocks = game.getUnlocks();
+
+        String endless = settings.get("endless");
+        if(endless.equals("true")){
+            this.endless = true;
+        }
+        else{
+            this.endless = false;
+        }
+
+
+
         if(map == null) {
             System.out.println("map is null");
             map = new TmxMapLoader().load("maps/FlyMap1.tmx");
@@ -72,6 +86,13 @@ public class GameScreen extends SkyScreen {
         }
         else{
             player.setCoords(1,195);
+        }
+
+        if(unlocks.get("additionalHearts") != null){
+            player.setHealth(5 + unlocks.get("additionalHearts"));
+        }
+        else{
+            player.setHealth(5);
         }
 
         stage = new Stage();

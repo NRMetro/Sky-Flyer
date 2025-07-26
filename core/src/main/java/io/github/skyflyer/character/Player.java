@@ -316,47 +316,47 @@ public class Player extends GameActor {
     }
 
     public void dispose(){
-        for (TextureRegion region : flyingRightAnimation.getKeyFrames()) {
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : flyingLeftAnimation.getKeyFrames()) {
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : flyingLeftWithSword.getKeyFrames()) {
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : flyingRightWithSword.getKeyFrames()) {
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : flyingLeftWithKnuckles.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : flyingRightWithKnuckles.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : flyingLeftWithSlingshot.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : flyingRightWithSlingshot.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : attackLeftWithSword.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : attackRightWithSword.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : attackRightWithKnuckles.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : attackLeftWithKnuckles.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : attackRightWithSlingshot.getKeyFrames()){
-            region.getTexture().dispose();
-        }
-        for (TextureRegion region : attackLeftWithSlingshot.getKeyFrames()){
-            region.getTexture().dispose();
-        }
+//        for (TextureRegion region : flyingRightAnimation.getKeyFrames()) {
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : flyingLeftAnimation.getKeyFrames()) {
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : flyingLeftWithSword.getKeyFrames()) {
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : flyingRightWithSword.getKeyFrames()) {
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : flyingLeftWithKnuckles.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : flyingRightWithKnuckles.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : flyingLeftWithSlingshot.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : flyingRightWithSlingshot.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : attackLeftWithSword.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : attackRightWithSword.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : attackRightWithKnuckles.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : attackLeftWithKnuckles.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : attackRightWithSlingshot.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
+//        for (TextureRegion region : attackLeftWithSlingshot.getKeyFrames()){
+//            region.getTexture().dispose();
+//        }
     }
 }

@@ -10,13 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.ObjectMap;
 import io.github.skyflyer.SkyFly;
+import io.github.skyflyer.serial.SaveFile;
 
-public class MainMenuScreen extends SkyScreen {
-    private Stage stage;
+public class SettingsScreen extends SkyScreen {
+    Stage stage;
     private Skin skin;
 
-    public MainMenuScreen(SkyFly game){
+    public SettingsScreen(SkyFly game) {
         super(game);
     }
 
@@ -30,60 +32,49 @@ public class MainMenuScreen extends SkyScreen {
         Texture bgTexture = new Texture(Gdx.files.internal("mainBackground.png"));
         Drawable background = new TextureRegionDrawable(new TextureRegion(bgTexture));
 
+        ObjectMap<String, String> settings = game.getSettings();
+        String endless = settings.get("endless");
+
+
         Table table = new Table();
         table.setFillParent(true);
         table.setBackground(background);
         stage.addActor(table);
 
-        Label gameName = new Label("SKY FLYER", skin, "big");
+        TextButton backButton = new TextButton("<-", skin,"small");
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MainMenuScreen mainScreen = new MainMenuScreen(game);
+                game.setScreen(mainScreen);
+            }
+        });
+        table.add(backButton).padBottom(20);
+        table.row();
+
+        Label gameName = new Label("Settings", skin, "big");
         table.add(gameName).padBottom(20);
         table.row();
 
-        Label money = new Label("Money in Bank: " + game.getTrophies(), skin);
-        table.add(money).padBottom(100);
-        table.row();
-
-        TextButton newGameButton = new TextButton("New Game", skin);
-        newGameButton.addListener(new ChangeListener() {
+        CheckBox endlessMode = new CheckBox("Endless Mode", skin);
+        endlessMode.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                GameScreen gameScreen = new GameScreen(game);
-                game.setScreen(gameScreen);
+                if(endlessMode.isChecked()){
+                    game.changeSetting("endless","true");
+                }
+                else{
+                    game.changeSetting("endless","false");
+                }
             }
         });
-        table.add(newGameButton).padBottom(10);
+        table.add(endlessMode).padBottom(10);
         table.row();
 
-        TextButton contGameButton = new TextButton("Shop", skin);
-        contGameButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                ShopScreen shopScreen = new ShopScreen(game);
-                game.setScreen(shopScreen);
-            }
-        });
-        table.add(contGameButton).padBottom(10);
-        table.row();
+        if(endless.equals("true")){
+            endlessMode.setChecked(true);
+        }
 
-        TextButton settingsButton = new TextButton("Settings", skin);
-        settingsButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                SettingsScreen settingsScreen = new SettingsScreen(game);
-                game.setScreen(settingsScreen);
-            }
-        });
-        table.add(settingsButton).padBottom(10);
-        table.row();
-
-        TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit();
-            }
-        });
-        table.add(exitButton);
     }
 
     @Override
@@ -99,6 +90,4 @@ public class MainMenuScreen extends SkyScreen {
         stage.dispose();
         skin.dispose();
     }
-
-
 }

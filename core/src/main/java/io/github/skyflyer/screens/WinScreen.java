@@ -1,6 +1,5 @@
 package io.github.skyflyer.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,7 +24,8 @@ public class WinScreen extends SkyScreen {
 
     @Override
     public void show() {
-        game.increaseMoney(10);
+        game.increaseTrophies(10);
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
@@ -50,7 +50,7 @@ public class WinScreen extends SkyScreen {
         table.add(deathMsg).padBottom(120);
         table.row();
 
-        Label money = new Label("YOU EARNED 10 MONEY", skin);
+        Label money = new Label("YOU EARNED 10 TROPHIES", skin);
         table.add(money).padBottom(120);
         table.row();
 
