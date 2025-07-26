@@ -1,6 +1,8 @@
 {
-trophies: 10
-unlocks: {}
+trophies: 20
+unlocks: {
+	additionalHearts: 2
+}
 settings: {
 	endless: "false"
 }

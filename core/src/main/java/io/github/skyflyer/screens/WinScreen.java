@@ -1,7 +1,6 @@
 package io.github.skyflyer.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Json;
 import io.github.skyflyer.SkyFly;
-import io.github.skyflyer.serial.SaveFile;
 
 public class WinScreen extends SkyScreen {
 
@@ -28,7 +25,6 @@ public class WinScreen extends SkyScreen {
     @Override
     public void show() {
         game.increaseTrophies(10);
-        saveTrophies(game.getTrophies());
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -54,7 +50,7 @@ public class WinScreen extends SkyScreen {
         table.add(deathMsg).padBottom(120);
         table.row();
 
-        Label money = new Label("YOU EARNED 10 MONEY", skin);
+        Label money = new Label("YOU EARNED 10 TROPHIES", skin);
         table.add(money).padBottom(120);
         table.row();
 
@@ -63,16 +59,6 @@ public class WinScreen extends SkyScreen {
         table.row();
 
 
-    }
-
-    private void saveTrophies(int trophies) {
-        Json json = new Json();
-        String input = Gdx.files.local("save.json").readString();
-        SaveFile data = json.fromJson(SaveFile.class, input);
-
-        data.addTrophies(trophies);
-        String output = json.prettyPrint(data);
-        Gdx.files.local("save.json").writeString(output, false);
     }
 
     @Override

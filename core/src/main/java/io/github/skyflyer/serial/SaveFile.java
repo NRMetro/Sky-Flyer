@@ -1,5 +1,6 @@
 package io.github.skyflyer.serial;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -40,10 +41,39 @@ public class SaveFile implements Json.Serializable {
         }
     }
     public int getTrophies() { return trophies; }
-    public ObjectMap<String, Integer> getUnlocks() { return unlocks; }
-    public ObjectMap<String, String> getSettings() { return settings; }
+    public ObjectMap<String, Integer> getUnlocks() { return new ObjectMap<>(unlocks); }
+    public ObjectMap<String, String> getSettings() { return new ObjectMap<>(settings); }
 
     public void addTrophies(int trophies) {
         this.trophies += trophies;
+        saveFile();
+    }
+
+
+    public void changeSetting(String name, String value) {
+        settings.put(name, value);
+        saveFile();
+    }
+
+    private void saveFile(){
+        Json json = new Json();
+        String output = json.prettyPrint(this);
+        Gdx.files.local("save.json").writeString(output, false);
+    }
+
+    public void changeUnlock(String unlock, int value) {
+        Integer existValue = unlocks.get(unlock);
+        if(existValue == null){
+            unlocks.put(unlock,value);
+        }
+        else{
+            unlocks.put(unlock,existValue+value);
+        }
+        saveFile();
+    }
+
+    public void decreaseTrophies(int amount) {
+        this.trophies -= amount;
+        saveFile();
     }
 }
