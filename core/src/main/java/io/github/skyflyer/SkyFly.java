@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 import io.github.skyflyer.screens.MainMenuScreen;
+import io.github.skyflyer.screens.ScreenController;
 import io.github.skyflyer.serial.SaveFile;
 
 public class SkyFly extends Game {
@@ -14,6 +15,8 @@ public class SkyFly extends Game {
 
     @Override
     public void create() {
+        ScreenController screens = new ScreenController(this);
+
         Json json = new Json();
 
         FileHandle file = Gdx.files.local("save.json");
@@ -31,8 +34,7 @@ public class SkyFly extends Game {
 
 
         System.out.println("Starting SkyFly");
-        setScreen(new MainMenuScreen(this));
-
+        screens.switchToMainMenu();
 
     }
 
