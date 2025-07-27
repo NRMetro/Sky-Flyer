@@ -1,7 +1,6 @@
 package io.github.skyflyer.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,11 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import io.github.skyflyer.SkyFly;
 
 public class ShopScreen extends SkyScreen {
-    Stage stage;
+    private Stage stage;
     private Skin skin;
+    private ScreenController screens;
 
-    public ShopScreen(SkyFly game) {
+    public ShopScreen(SkyFly game, ScreenController screenController) {
         super(game);
+        this.screens = screenController;
     }
 
     @Override
@@ -39,27 +40,31 @@ public class ShopScreen extends SkyScreen {
         table.setBackground(background);
         stage.addActor(table);
 
+        Table title = new Table();
+
         TextButton backButton = new TextButton("<-", skin,"small");
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                MainMenuScreen mainScreen = new MainMenuScreen(game);
-                game.setScreen(mainScreen);
+                screens.switchToMainMenu();
             }
         });
-        table.add(backButton).padBottom(20);
-        table.row();
+        title.add(backButton).padRight(10);
 
         Label gameName = new Label("UPGRADES SHOP", skin, "big");
-        table.add(gameName).padBottom(20);
+        title.add(gameName);
+
+        table.add(title).padBottom(10);
         table.row();
 
         Label money = new Label("Money in Bank: " + game.getTrophies(), skin);
         table.add(money).padBottom(100);
         table.row();
 
+        Table incHeartsTable = new Table();
+
         Label incHearts = new Label("Increase Hearts: (10 Trophies)", skin);
-        table.add(incHearts).padBottom(20);
+        incHeartsTable.add(incHearts).padRight(10);
         TextButton increaseHearts = new TextButton("+", skin,"small");
         increaseHearts.addListener(new ChangeListener() {
             @Override
@@ -71,7 +76,9 @@ public class ShopScreen extends SkyScreen {
                 }
             }
         });
-        table.add(increaseHearts).padBottom(20);
+        incHeartsTable.add(increaseHearts);
+
+        table.add(incHeartsTable).padBottom(20);
         table.row();
 
     }
