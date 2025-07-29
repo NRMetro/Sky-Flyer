@@ -12,14 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ObjectMap;
 import io.github.skyflyer.SkyFly;
-import io.github.skyflyer.serial.SaveFile;
 
 public class SettingsScreen extends SkyScreen {
-    Stage stage;
+    private Stage stage;
     private Skin skin;
+    private ScreenController screens;
 
-    public SettingsScreen(SkyFly game) {
+    public SettingsScreen(SkyFly game, ScreenController screenController) {
         super(game);
+        this.screens = screenController;
     }
 
     @Override
@@ -41,19 +42,20 @@ public class SettingsScreen extends SkyScreen {
         table.setBackground(background);
         stage.addActor(table);
 
+        Table title = new Table();
+
         TextButton backButton = new TextButton("<-", skin,"small");
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                MainMenuScreen mainScreen = new MainMenuScreen(game);
-                game.setScreen(mainScreen);
+                screens.switchToMainMenu();
             }
         });
-        table.add(backButton).padBottom(20);
-        table.row();
-
+        title.add(backButton).padRight(10);
         Label gameName = new Label("Settings", skin, "big");
-        table.add(gameName).padBottom(20);
+        title.add(gameName);
+
+        table.add(title).padBottom(10);
         table.row();
 
         CheckBox endlessMode = new CheckBox("Endless Mode", skin);

@@ -4,6 +4,7 @@ package io.github.skyflyer.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,6 +39,7 @@ import java.util.List;
 
 public class GameScreen extends SkyScreen {
 
+    private ScreenController screens;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -55,8 +57,9 @@ public class GameScreen extends SkyScreen {
     private int totalMaps = 3;
     private List<SlingshotBullet> playerBullets = new ArrayList<>();
 
-    public GameScreen(SkyFly game) {
+    public GameScreen(SkyFly game, ScreenController screens) {
         super(game);
+        this.screens = screens;
         fileNumber = 1;
         setMap();
     }
@@ -194,7 +197,7 @@ public class GameScreen extends SkyScreen {
         stage.draw();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new MainMenuScreen(game));
+            screens.switchToMainMenu();
             dispose();
         }
     }
@@ -212,8 +215,13 @@ public class GameScreen extends SkyScreen {
         }
         if(health == 0){
             System.out.println("Game Over");
-            game.setScreen(new DeathScreen(game));
+            screens.switchToDeath();
         }
+    }
+
+    public void newGame(){
+        fileNumber = 1;
+        setMap();
     }
 
     @Override
@@ -226,6 +234,7 @@ public class GameScreen extends SkyScreen {
     }
 
     public void setMap(){
+        System.out.println("set map" + fileNumber);
         String filename = "maps/FlyMap" + fileNumber + ".tmx";
         map = new TmxMapLoader().load(filename);
         show();
@@ -249,7 +258,7 @@ public class GameScreen extends SkyScreen {
                         setMap();
                     }
                     else if(fileNumber == totalMaps){
-                        game.setScreen(new WinScreen(game));
+                        new ScreenController(game).switchToWin();
                     }
                     else{
                         fileNumber++;

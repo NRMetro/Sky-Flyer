@@ -17,9 +17,12 @@ import io.github.skyflyer.SkyFly;
 
 public class WinScreen extends SkyScreen {
 
-    Stage stage;
-    public WinScreen(SkyFly game) {
+    private Stage stage;
+    private ScreenController screens;
+
+    public WinScreen(SkyFly game, ScreenController screenController) {
         super(game);
+        this.screens = screenController;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class WinScreen extends SkyScreen {
         table.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainMenuScreen(game));
+                screens.switchToMainMenu();
             }
         });
         stage.addActor(table);
