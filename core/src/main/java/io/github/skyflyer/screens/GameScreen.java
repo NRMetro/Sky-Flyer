@@ -175,6 +175,7 @@ public class GameScreen extends SkyScreen {
         weaponManager.render(batch);
 
         player.render(batch);
+
         for(Enemy e: enemies){
             e.render(batch);
         }

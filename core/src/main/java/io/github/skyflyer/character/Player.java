@@ -167,6 +167,7 @@ public class Player extends GameActor {
     public void setCoords(float x, float y) {
         setPosition(new Vector2(x, y));
     }
+
     public void update(float delta) {
         float speed = 30f;
         float dx = 0;
@@ -182,8 +183,12 @@ public class Player extends GameActor {
 
         timeSeconds += Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) dy += speed * delta + dash;
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) dy -= speed * delta + dash;
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            dy += speed * delta + dash;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            dy -= speed * delta + dash;
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             dx -= speed * delta + dash;
             facingRight = false;
