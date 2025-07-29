@@ -18,11 +18,9 @@ import io.github.skyflyer.SkyFly;
 public class ShopScreen extends SkyScreen {
     private Stage stage;
     private Skin skin;
-    private ScreenController screens;
 
-    public ShopScreen(SkyFly game, ScreenController screenController) {
+    public ShopScreen(SkyFly game) {
         super(game);
-        this.screens = screenController;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class ShopScreen extends SkyScreen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                screens.switchToMainMenu();
+                game.switchToScreen("MainMenuScreen");
             }
         });
         title.add(backButton).padRight(10);

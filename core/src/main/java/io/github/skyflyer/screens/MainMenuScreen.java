@@ -15,11 +15,9 @@ import io.github.skyflyer.SkyFly;
 public class MainMenuScreen extends SkyScreen {
     private Stage stage;
     private Skin skin;
-    private ScreenController screens;
 
-    public MainMenuScreen(SkyFly game,ScreenController screens){
+    public MainMenuScreen(SkyFly game){
         super(game);
-        this.screens = screens;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class MainMenuScreen extends SkyScreen {
         newGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                screens.switchToGame();
+                game.switchToScreen("GameScreen");
             }
         });
         table.add(newGameButton).padBottom(10);
@@ -59,7 +57,7 @@ public class MainMenuScreen extends SkyScreen {
         contGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                screens.switchToShop();
+                game.switchToScreen("ShopScreen");
             }
         });
         table.add(contGameButton).padBottom(10);
@@ -69,7 +67,7 @@ public class MainMenuScreen extends SkyScreen {
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                screens.switchToSettings();
+                game.switchToScreen("SettingsScreen");
             }
         });
         table.add(settingsButton).padBottom(10);
