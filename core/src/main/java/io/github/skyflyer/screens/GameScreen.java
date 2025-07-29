@@ -39,7 +39,6 @@ import java.util.List;
 
 public class GameScreen extends SkyScreen {
 
-    private ScreenController screens;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -57,9 +56,8 @@ public class GameScreen extends SkyScreen {
     private int totalMaps = 3;
     private List<SlingshotBullet> playerBullets = new ArrayList<>();
 
-    public GameScreen(SkyFly game, ScreenController screens) {
+    public GameScreen(SkyFly game) {
         super(game);
-        this.screens = screens;
         fileNumber = 1;
         setMap();
     }
@@ -197,7 +195,7 @@ public class GameScreen extends SkyScreen {
         stage.draw();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            screens.switchToMainMenu();
+            game.switchToScreen("MainMenuScreen");
             dispose();
         }
     }
@@ -215,7 +213,7 @@ public class GameScreen extends SkyScreen {
         }
         if(health == 0){
             System.out.println("Game Over");
-            screens.switchToDeath();
+            game.switchToScreen("DeathScreen");
         }
     }
 
@@ -258,7 +256,7 @@ public class GameScreen extends SkyScreen {
                         setMap();
                     }
                     else if(fileNumber == totalMaps){
-                        new ScreenController(game).switchToWin();
+                        game.switchToScreen("WinScreen");
                     }
                     else{
                         fileNumber++;

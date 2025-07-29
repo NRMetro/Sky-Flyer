@@ -18,11 +18,10 @@ import io.github.skyflyer.SkyFly;
 public class DeathScreen extends SkyScreen {
 
     private Stage stage;
-    private ScreenController screens;
 
-    public DeathScreen(SkyFly game, ScreenController screenController) {
+
+    public DeathScreen(SkyFly game) {
         super(game);
-        this.screens = screenController;
     }
 
     @Override
@@ -42,7 +41,7 @@ public class DeathScreen extends SkyScreen {
         table.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screens.switchToMainMenu();
+                game.switchToScreen("MainMenuScreen");
             }
         });
         stage.addActor(table);

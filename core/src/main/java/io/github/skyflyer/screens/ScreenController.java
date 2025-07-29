@@ -12,12 +12,12 @@ public class ScreenController extends SkyScreen{
 
     public ScreenController(SkyFly game) {
         super(game);
-        mainMenu = new MainMenuScreen(game,this);
-        gameScreen = new GameScreen(game,this);
-        shop = new ShopScreen(game,this);
-        settings = new SettingsScreen(game,this);
-        death = new DeathScreen(game,this);
-        win = new WinScreen(game,this);
+        mainMenu = new MainMenuScreen(game);
+        gameScreen = new GameScreen(game);
+        shop = new ShopScreen(game);
+        settings = new SettingsScreen(game);
+        death = new DeathScreen(game);
+        win = new WinScreen(game);
     }
 
     public void switchToMainMenu(){game.setScreen(mainMenu);}
