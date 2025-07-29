@@ -45,7 +45,7 @@ public class BoomBoom extends FlyingEnemy {
             Texture frame = new Texture(Gdx.files.internal("Enemies/bomberBlowingUpRight/blowUpRight_" + i + ".png"));
             rightBlowingUpFrames.add(new TextureRegion(frame));
         }
-        blowingUpRight = new Animation<>(0.3f, rightBlowingUpFrames, Animation.PlayMode.NORMAL);
+        blowingUpRight = new Animation<>(0.1f, rightBlowingUpFrames, Animation.PlayMode.NORMAL);
 
         // Load left blowing up -facing animation frames
         Array<TextureRegion> leftBlowingUpFrames = new Array<>();
@@ -53,7 +53,7 @@ public class BoomBoom extends FlyingEnemy {
             Texture frame = new Texture(Gdx.files.internal("Enemies/bomberBlowingUpLeft/blowUpLeft_" + i + ".png"));
             leftBlowingUpFrames.add(new TextureRegion(frame));
         }
-        blowingUpLeft = new Animation<>(0.3f, leftBlowingUpFrames, Animation.PlayMode.NORMAL);
+        blowingUpLeft = new Animation<>(0.1f, leftBlowingUpFrames, Animation.PlayMode.NORMAL);
     }
 
     @Override
