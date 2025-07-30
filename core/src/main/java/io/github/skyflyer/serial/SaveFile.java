@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class SaveFile implements Json.Serializable {
     private int trophies;
-    private ObjectMap<String, Integer> unlocks = new ObjectMap<>();
-    private ObjectMap<String, String> settings = new ObjectMap<>();
+    private final ObjectMap<String, Integer> unlocks = new ObjectMap<>();
+    private final ObjectMap<String, String> settings = new ObjectMap<>();
 
     public SaveFile() {
         trophies = 0;

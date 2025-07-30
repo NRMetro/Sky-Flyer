@@ -1,17 +1,19 @@
 package io.github.skyflyer.screens;
 
+import com.badlogic.gdx.Game;
 import io.github.skyflyer.SkyFly;
 
-public class ScreenController extends SkyScreen{
+public class ScreenController{
     private final SkyScreen mainMenu;
     private final GameScreen gameScreen;
     private final SkyScreen shop;
     private final SkyScreen settings;
     private final SkyScreen death;
     private final SkyScreen win;
+    private final Game game;
 
     public ScreenController(SkyFly game) {
-        super(game);
+        this.game = game;
         mainMenu = new MainMenuScreen(game);
         gameScreen = new GameScreen(game);
         shop = new ShopScreen(game);
