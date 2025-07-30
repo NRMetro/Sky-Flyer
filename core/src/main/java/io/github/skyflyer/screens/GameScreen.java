@@ -26,6 +26,7 @@ import io.github.skyflyer.character.enemyGeneric.EnemySpawner;
 import io.github.skyflyer.character.enemyType.Grounder;
 import io.github.skyflyer.character.enemyType.BoomBoom;
 
+import io.github.skyflyer.character.projectiles.Projectile;
 import io.github.skyflyer.weapons.SlingshotBullet;
 import io.github.skyflyer.weapons.Weapon;
 import io.github.skyflyer.weapons.WeaponManager;
@@ -54,6 +55,7 @@ public class GameScreen extends SkyScreen {
     private int fileNumber;
     private int totalMaps = 3;
     private List<SlingshotBullet> playerBullets = new ArrayList<>();
+    private final List<Projectile> enemyProjectiles = new ArrayList<>();
 
     public GameScreen(SkyFly game) {
         super(game);
@@ -73,8 +75,6 @@ public class GameScreen extends SkyScreen {
         else{
             this.endless = false;
         }
-
-
 
         if(map == null) {
             System.out.println("map is null");
@@ -129,6 +129,7 @@ public class GameScreen extends SkyScreen {
 
         enemySpawner = new EnemySpawner(managers);
         enemySpawner.placeEnemies(map, 1, 30);
+        enemySpawner.injectGameScreen(this);
 
         // Initialize weapon manager and spawner
         Texture knucklesTexture = new Texture("Weapons/knuckles.png");
@@ -187,6 +188,22 @@ public class GameScreen extends SkyScreen {
             b.render(batch);
             if (b.isToRemove()) iter.remove();
         }
+
+        // Update and render enemy bullets
+        Iterator<Projectile> enemyBulletIter = enemyProjectiles.iterator();
+        while(enemyBulletIter.hasNext()) {
+            Projectile p = enemyBulletIter.next();
+            p.update(delta, player.getPosition());
+            p.render(batch);
+
+            if (p.isPlayerhit()) {
+                playerHit(1); // or whatever damage system you use
+                enemyBulletIter.remove();
+            } else if (p.isToRemove()) {
+                enemyBulletIter.remove();
+            }
+        }
+
 
         batch.end();
 
@@ -320,6 +337,10 @@ public class GameScreen extends SkyScreen {
 
     public void addBullets(SlingshotBullet bullet){
         playerBullets.add(bullet);
+    }
+
+    public void addEnemyProjectile(Projectile p){
+        enemyProjectiles.add(p);
     }
 
 

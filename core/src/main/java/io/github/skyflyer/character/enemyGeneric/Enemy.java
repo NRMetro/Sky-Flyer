@@ -2,6 +2,7 @@ package io.github.skyflyer.character.enemyGeneric;
 
 import com.badlogic.gdx.math.Vector2;
 import io.github.skyflyer.character.GameActor;
+import io.github.skyflyer.screens.GameScreen;
 
 public class Enemy extends GameActor implements Comparable<Enemy> {
 
@@ -19,6 +20,9 @@ public class Enemy extends GameActor implements Comparable<Enemy> {
         playerDamage = 0;
         timeSeconds = 0;
         toRemove = false;
+    }
+
+    public void setGameScreen(GameScreen screen){
     }
 
     public void update(float delta) {

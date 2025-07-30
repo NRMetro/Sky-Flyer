@@ -23,7 +23,7 @@ public class BoomBoom extends FlyingEnemy {
         super();
         toRemove = false;
 
-        // Load right-facing animation frames
+        // Load right facing animation frames
         Array<TextureRegion> rightFrames = new Array<>();
         for (int i = 0; i < 3; i++) {
             Texture frame = new Texture(Gdx.files.internal("Enemies/bomberMovingRight/bomberRight_" + i + ".png"));
@@ -31,7 +31,7 @@ public class BoomBoom extends FlyingEnemy {
         }
         flyingRight = new Animation<>(0.3f, rightFrames, Animation.PlayMode.LOOP);
 
-        // Load right-facing animation frames
+        // Load right facing animation frames
         Array<TextureRegion> leftFrames = new Array<>();
         for (int i = 0; i < 3; i++) {
             Texture frame = new Texture(Gdx.files.internal("Enemies/bomberMovingLeft/bomberLeft_" + i + ".png"));
@@ -45,7 +45,7 @@ public class BoomBoom extends FlyingEnemy {
             Texture frame = new Texture(Gdx.files.internal("Enemies/bomberBlowingUpRight/blowUpRight_" + i + ".png"));
             rightBlowingUpFrames.add(new TextureRegion(frame));
         }
-        blowingUpRight = new Animation<>(0.3f, rightBlowingUpFrames, Animation.PlayMode.NORMAL);
+        blowingUpRight = new Animation<>(0.1f, rightBlowingUpFrames, Animation.PlayMode.NORMAL);
 
         // Load left blowing up -facing animation frames
         Array<TextureRegion> leftBlowingUpFrames = new Array<>();
@@ -53,7 +53,7 @@ public class BoomBoom extends FlyingEnemy {
             Texture frame = new Texture(Gdx.files.internal("Enemies/bomberBlowingUpLeft/blowUpLeft_" + i + ".png"));
             leftBlowingUpFrames.add(new TextureRegion(frame));
         }
-        blowingUpLeft = new Animation<>(0.3f, leftBlowingUpFrames, Animation.PlayMode.NORMAL);
+        blowingUpLeft = new Animation<>(0.1f, leftBlowingUpFrames, Animation.PlayMode.NORMAL);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
+import io.github.skyflyer.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,6 +89,15 @@ public class EnemySpawner {
             manager.checkDistances(position);
         }
     }
+
+    public void injectGameScreen(GameScreen screen) {
+        for (EnemyManager<? extends Enemy> manager : enemyManagers) {
+            for (Enemy e : manager.getEnemies()) {
+                e.setGameScreen(screen); // inject if supported
+            }
+        }
+    }
+
 
     public List<EnemyManager<? extends Enemy>> getEnemyManagers() {
         return enemyManagers;
